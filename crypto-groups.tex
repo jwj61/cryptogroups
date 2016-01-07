@@ -1,0 +1,2628 @@
+\documentclass[12pt]{amsart}
+
+%\usepackage{srcltx}
+\usepackage{verbatim}
+\usepackage{amsmath,amsthm,amssymb,amsfonts}
+\usepackage{marvosym}
+\usepackage{graphicx}
+\usepackage[colorlinks]{hyperref}
+%\usepackage{wrapfig}
+\usepackage{array}
+\usepackage{amscd}
+%\usepackage[all]{xy}
+
+\setlength{\extrarowheight}{1pt}
+
+\newcommand{\nc}{\newcommand}
+\nc{\Q}{\mathbb{Q}}
+\nc{\Z}{\mathbb{Z}}
+\nc{\C}{\mathbb{C}}
+\nc{\R}{\mathbb{R}}
+\nc{\F}{\mathbb{F}}
+\nc{\Qstar}{\Q^\times}
+\nc{\Cstar}{\C^\times}
+\nc{\Rstar}{\R^\times}
+\nc{\Znstar}{\Zn^\times}
+\nc{\Nat}{\mathbb{N}}
+\nc{\Zp}{\Z_p}
+\nc{\Zn}{\Z_n}
+\nc{\Fp}{\F_p}
+\nc{\pr}{\mathbb{P}}
+\nc{\af}{\mathbb{A}}
+\nc{\bx}{\mathbf{x}}
+\nc{\Fpbar}{\overline{\F}_p}
+\nc{\Kbar}{\overline{K}}
+\nc{\Qbar}{\overline{\Q}}
+\nc{\Qpbar}{\overline{\Q}_p}
+\nc{\cfp}{\mathcal{F}_p}
+\nc{\calA}{\mathcal{A}}    \nc{\calC}{\mathcal{C}}
+\nc{\calP}{\mathcal{P}}    \nc{\calK}{\mathcal{K}}
+\nc{\Oc}{\mathcal{O}}
+\nc{\orig}{\Oc}
+\nc{\con}{\text{\reflectbox{\Lightning}\Lightning}}
+\nc{\fal}{f_\alpha}
+\nc{\cots}{, \ldots,}
+\nc{\seq}{\subseteq}
+\nc{\pots}{+ \cdots +}
+\nc{\leg}[2]{{\displaystyle\left(\frac{#1}{#2}\right)}}
+\nc{\ty}[1]{\texttt{#1}}
+\nc{\of}{\circ}
+\nc{\ds}{\displaystyle}
+\nc{\exdiv}{\,||\,}
+\nc{\Nr}{\textrm{N}}
+\nc{\gen}[1]{\langle #1\rangle}
+\renewcommand{\Im}{\textrm{Im}} % don't need imaginary part
+\DeclareMathOperator{\Div}{Div}
+\DeclareMathOperator{\Pic}{Pic}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\ddiv}{div}
+\DeclareMathOperator{\cok}{cok}
+\DeclareMathOperator{\disc}{disc}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\im}{Im}
+\DeclareMathOperator{\GL}{GL}
+\DeclareMathOperator{\chr}{char}
+
+
+\nc{\cbar}{\overline{E}}
+\nc{\abar}{\overline{a}}
+\nc{\bbar}{\overline{b}}
+
+\newcounter{probs}
+
+\newenvironment{prob}{%
+  \refstepcounter{probs}
+  \par\medskip\noindent\textbf{Exercise \theprobs:} }{\par\medskip}
+\nc{\pp}{\pr^1}
+\nc{\tg}{\langle e\rangle}
+\DeclareMathOperator{\tr}{Tr}
+\DeclareMathOperator{\N}{N}
+\DeclareMathOperator{\charr}{char}
+\DeclareMathOperator{\aut}{Aut}
+\DeclareMathOperator{\gal}{Gal}
+\nc{\uph}{\mathcal{H}}
+\nc{\from}{\leftarrow}
+\nc{\ilim}{\displaystyle\lim_{\from}}
+
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{lemma}[thm]{Lemma}
+\newtheorem{cor}[thm]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+
+\theoremstyle{remark}
+\newtheorem*{notation}{Notation}
+\newtheorem*{note}{Note}
+\newtheorem*{remark}{Remark}
+\newtheorem*{exam}{Example}
+
+%\let\oldsec\section
+%\def\section{\clearpage\oldsec}
+
+\title{Algebra for Cryptologists}
+\author{John W.{} Jones}
+
+\begin{document}
+\maketitle
+
+These notes were written for the beginning of MAT 448, {\em Cryptography
+II}.  There are basic notions from abstract algebra, particularly from
+group theory, which are essential
+throughout the course.  On the other hand, we will not need advanced
+aspects of group theory like the Sylow theorems, so we will cover
+everything we need relatively quickly.
+
+
+\tableofcontents
+
+\section{Notation and conventions}
+Note that in proofs by contradiction, we use the symbol \con{} to
+indicate that a contradiction has been reached.
+
+\subsection{Famous sets}
+Here we collect definitions and notation to be used throughout.  It is
+intended more as a reference than an introduction.  In particular, we
+specify what natural algebraic structures these sets possess even
+though those structures are not defined until later sections.
+
+We let
+\begin{align*}
+&\Z = \text{the set of integers} \quad\text{(a group under $+$ and a ring)} \\
+&\Q = \text{the set of rational numbers}  \quad\text{(a group under $+$ and a field)} \\
+&\R = \text{the set of real numbers}  \quad\text{(a group under $+$ and a field)} \\
+&\C= \text{the set of complex numbers} \quad\text{(a group under $+$ and a field)} \\
+&\Qstar= \{a\in\Q\mid a\neq 0\} \quad\text{(a group under multiplication)}\\
+&\Rstar= \{a\in\R\mid a\neq 0\} \quad\text{(a group under multiplication)}\\
+&\Cstar= \{a\in\C\mid a\neq 0\}\quad\text{(a group under multiplication)}\\
+&\Zn = \text{integers modulo $n$} \quad\text{(a group under $+$ and a ring)} \\
+&\mathbb N=\{a\in\Z\mid a\geq 0\} 
+\end{align*}
+A superscript of $+$ means we want the positive elements, so
+$$\Z^+=\{a\in \Z\mid a>0\},$$ and similarly for $\Q^+$ and $\R^+$.
+
+If we have a set $R$ and positive integer $n\in\Z^+$, then we let
+\[ M_n(R)=\{n\times n \text{ matrices with entries from $R$}\}.\]
+We will only use this when $R$ is a ring, specifically $R=\Q$, $\R$,
+$\C$, $\Zn$, or $\Z$.  
+% In any of these cases, $M_n(R)$ is a ring with
+% identity under matrix addition and matrix multiplication.  We let
+% $I_n\in M_n(R)$ be the identity matrix (ones on the main diagonal and
+% zeros everywhere else).
+% Since $M_n(R)$ is a ring with identity, we can consider its group of
+% units:
+In each case, we are also interested in the group
+\[ \GL_n(R) =\{A\in M_n(R)\mid \det(A)\in R^\times\}.\] 
+For this definition, $\Zn^\times$ is defined in Section~\ref{zn}
+below; $\Z^\times=\{-1,1\}$.
+
+\subsection{Functions}
+If we have a function $f:A\to B$, then we assume $f$ is defined for
+every element of $A$, so $A$ is the domain of $f$.  We refer to $B$ as
+the codomain of $f$, as opposed to its image:
+\[ \text{Im}(f)=f(A) = \{f(a)\mid a\in A\}\seq B\]
+
+\subsection{$\Zn$}
+\label{zn}
+An essential construction for us is $\Zn$.  There are three ways of
+viewing it.  First, we fix $n\in\Z^+$.
+
+First, we can think of integers up to congruences.  If $a,b\in \Z$, we
+define
+\[ a\equiv b\pmod n \iff n\mid b-a.\]
+Here, we are dealing with integers, but only think of them as
+different if they are not congruent modulo $n$.  Every integer is
+congruent to its remainder on division by $n$, and no two remainders
+from $\{0,\ldots, n-1\}$ are congruent modulo $n$, so we have $n$
+things (see Section~\ref{div-alg} for more on remainders and the
+Division algorithm).
+
+Building on this idea gives the second point of view, namely that
+$\Zn=\{0\cots n-1\}$, and when we perform operations, we always
+replace the result with its remainder on division by $n$.  This is
+very concrete and well-suited for implimentation on a computer, but is
+less elegant mathematically.  To assist in working with this version,
+we define
+\[ a\bmod n = \text{ the remainder when $a$ is divided by $n$}.\]
+This is the unique integer $r$ such that $0\leq r<n$ and $a=nq+r$ for
+some integer $q$.
+
+The third approach also builds on the first.  One can show that
+congruence modulo $n$ is an equivalence relation on $\Z$, in which
+case we have equivalence classes:
+\[ [a]_n = \{b\in\Z\mid a\equiv b\pmod n\}.\]
+From the comments above, we again get a set with $n$ things, namely
+$\{[0]_n, [1]_n, \ldots, [n-1]_n\}$, but with the classes, $[0]_n=[n]_n$, and
+$[5]_n=[n+5]_n=[-n+5]_n$.
+
+We can sum up the connections between these points of view as
+follows.  If $n\in\Z^+$ and $a,b\in \Z$
+\[
+\begin{array}{ccccc}
+\text{Classes} && \text{Relation} && \text{Remainders} \\[1ex]
+[a]_n=[b]_n & \iff & a\equiv b\pmod n & \iff & (a\bmod n) = (b \bmod n)
+\end{array}
+\]
+
+In all cases, we want to be able to add and multiply elements of
+$\Zn$.  From the point of view of congruences, this says that we can
+replace one integer with another it is congruent to when performing
+addition or multiplication.
+\begin{prop}\label{cong-well-def}
+  Let $n\in\Z^+$, $a,b,c,d\in \Z$ with 
+  \[ a\equiv b \pmod n \quad\text{and}\quad c\equiv d\pmod n.\]
+  Then,
+  \begin{enumerate}
+  \item $a+c\equiv b+d\pmod n$
+  \item $ac\equiv bd \pmod n$
+  \item $a-c\equiv b-d\pmod n$
+  \end{enumerate}
+\end{prop}
+We leave the proofs as exercises to the reader.  Note, the final part
+can be deduced from the first two since $a-c=a+(-1)\cdot c$.
+\begin{prob}
+  Prove Proposition~\ref{cong-well-def}.
+\end{prob}
+
+
+The corresponding statement in terms of congruence classes looks like
+this:
+\begin{cor}
+  Let $n\in\Z^+$, $a,b,c,d\in \Z$ with 
+  \[ [a]_n=[b]_n  \quad\text{and}\quad [c]_n= [d]_n.\]
+  Then
+  \begin{enumerate}
+  \item $[a+c]_n=[b+d]_n$
+  \item $[ac]_n= [bd]_n$
+  \item $[a-c]_n=[b-d]_n$
+  \end{enumerate}
+\end{cor}
+Phrased in this way, it shows that addition, multiplication, and
+subtraction of congruence classes is well-defined.  That is, the
+operations can be computed by chosing elements from the classes, and
+the final result does not depend on the choices.
+
+
+Using $\Zn=\{0\cots n-1\}$, we can write down complete addition and
+multiplication tables for small $n$.  For example, here are the
+operation tables for $\Z_4$.
+\[
+\begin{array}{c|*{4}{|c}}
++ & 0 & 1 & 2 & 3 \\ \hline \hline
+0 & 0 & 1 & 2 & 3 \\ \hline
+1 & 1 & 2 & 3 & 0 \\ \hline
+2 & 2 & 3 & 0 & 1 \\ \hline
+3 & 3 & 0 & 1 & 2 
+\end{array}
+\qquad
+\qquad
+\begin{array}{c|*{4}{|c}}
+\cdot & 0 & 1 & 2 & 3 \\ \hline \hline
+0 & 0 & 0 & 0 & 0 \\ \hline
+1 & 0 & 1 & 2 & 3 \\ \hline
+2 & 0 & 2 & 0 & 2 \\ \hline
+3 & 0 & 3 & 2 & 1 
+\end{array}
+\]
+
+We consider another instance of something being {\em well-defined}.
+If $[a]_n\in\Zn$, then we would like to define $\gcd([a]_n,n)$ to be
+simply $\gcd(a,n)$.  Since it is possible for a single congruence
+class to be represented by many different integers, we have to prove
+that the final result does not depend on this choice.
+\begin{prop}
+  If $n\in\Z^+$ and $a,b\in\Z$ with $[a]_n=[b]_n$, then
+  $\gcd(a,n)=\gcd(b,n)$.
+\end{prop}
+\begin{proof} \label{gcd-well-def}
+  Since $[a]_n=[b]_n$, $a\equiv b\pmod n$, which implies that 
+\begin{equation}\label{abnk}
+  a=b+nk
+\end{equation}
+for some $k\in\Z$.  Since $\gcd(b,n)\mid b$ and $\gcd(b,n)\mid n$,
+  we get from equation~\ref{abnk} that $\gcd(b,n)\mid a$.  Since
+  $\gcd(b,n)\mid n$ as well, we get $\gcd(b,n)\leq \gcd(a,n)$.
+
+  We can also solve equation~\ref{abnk} for $b$: $b=a+n(-k)$.
+  Repeating the same argument with the roles of $a$ and $b$ reversed
+  gives $\gcd(a,n)\leq \gcd(b,n)$.  Together with the first part, we
+  get $\gcd(a,n)=\gcd(b,n)$.
+\end{proof}
+\begin{exam}
+  To see an example where something is {\em not} well-defined,
+  supposed we wanted to define $\gcd([a]_n,[b]_n)$ to be $\gcd(a,b)$.
+  This will not work in general; here is a counterexample.  Let $n=3$,
+  $a=b=1$.  Then $\gcd(a,b)=\gcd(1,1)=1$.  But, $[1]_3=[4]_3$.  On one
+  hand, we would have $\gcd([1]_3,[1]_3)=1$, and on the other hand
+  $\gcd([1]_3,[1]_3) = \gcd([4]_3,[4]_3) =\gcd(4,4)=4$.  The result
+  depends on what integers we pick for representing the congruence classes.
+\end{exam}
+
+By Proposition~\ref{gcd-well-def}, we can define
+\[ \Znstar = \{[a]_n\in\Zn\mid \gcd(a,n)=1\},\]
+and define the Euler phi-function for $n\in\Z^+$:
+\[ \varphi(n) = |\Znstar|.\]
+Note, although $\Z_1=[0]_1$ has only one element, $\gcd(0,1)=1$ so
+$\Z_1^\times=\{[0_1]\} = \{[1]_1\}$, giving $\varphi(1)=1$.
+
+
+
+
+\section{Groups}
+
+Here we introduce definitions and some notions from group theory.  As
+we will see, they apply to crytography in many situations and can
+unify ideas applied in different places.
+
+We start with something more basic, the notion of a binary operation
+which is central to the definition of group.
+
+\subsection{Binary operations}
+
+\begin{defn}
+A {\em binary operation} $*$ on a set $S$ is a function
+\[ *:S\times S \to S.\]
+We write $a*b$ for the value of this function on the ordered pair
+$(a,b)\in S$.
+\end{defn}
+Note:
+\begin{itemize}
+\item by saying that $*$ is a function, it implies that $a*b$ is defined
+  for every pair of elements $a,b\in S$.
+\item The codomain is $S$, so always $a*b\in S$.
+\end{itemize}
+\begin{exam}
+Three familiar examples are given by addition, subtraction, and
+multiplication on $\Z$.
+\end{exam}
+
+\begin{exam}
+Similarly, addition, subtraction,
+and multiplication are each binary operations on $\R$, but division is
+not a binary operation since $5\div 0$ is not defined as a real number.
+\end{exam}
+
+\begin{exam} On the other hand, division is a binary operation on
+$\R^\times$.
+\end{exam}
+
+There are several properties of interest which a binary operation may
+satisfy.
+\begin{defn}
+  Let $*$ be a binary operation on a set $S$.
+\begin{itemize}
+\item  $*$ is {\em associative} if for all
+  $a,b,c\in S$,
+  \[ a*(b*c)=(a*b)*c.\]
+\item $*$ is {\em commutative} if for all $a,b\in S$,
+  \[ a*b = b*a.\]
+\item $*$ has {\em identity} $e$ if $e\in S$ and for all $a\in S$,
+  \[ a*e=e*a=a.\]
+\end{itemize} 
+\end{defn}
+
+\begin{exam}
+Addition and multiplication on $\Z$ are both commutative,
+associative, and have identity ($0$ for addition and $1$ for
+multiplication).  Note, subtraction is neither commutative ($3-5\neq
+5-3$) nor associative ($1-(2-3)\neq (1-2)-3$), and does not have an
+identity element.
+\end{exam}
+
+\begin{prob}
+Prove that $\Z$ does not have an identity element under subtraction.
+\end{prob}
+
+Our first proposition shows that if there is an identity element for a
+binary operation, then it is unique.
+\begin{prop} \label{unique-identity}
+  If $*$ is a binary operation on a set $S$, then there is at most one
+  identity element for $*$.
+\end{prop}
+\begin{proof}
+  Suppose to contrary that $e$ and $e'$ are both identity elements
+  for $*$ on $S$.  Then
+  \begin{align*}
+    e*e' &= e \text{ since $e'$ is an identity element, and} \\
+    e*e' &= e' \text{ since $e$ is an identity element.}
+  \end{align*}
+  Thus $e=e'$.
+\end{proof}
+We have one more definition.
+\begin{defn}
+  Let $*$ be a binary operation on a set $S$ which has identity $e$.
+  If $a\in S$, we say that $b\in S$ is an {\em inverse} of $a$ if
+  \[ a*b=b*a=e.\]
+\end{defn}
+When an inverse exists, it is unique.
+\begin{prop} \label{unique-inverse}
+  Let $*$ be an associative binary operation on a set $S$ which has
+  identity $e$, and $a\in S$.  Then $a$ has at most one inverse in
+  $S$.
+\end{prop}
+\begin{proof}
+  Suppose $b$ and $c$ are both inverses of $a$.  Then
+\[ b*(a*c) = b*e= b\]
+and
+\[ (b*a)*c = e*c=c.\]
+Since the operation is associative, $b*(a*c)=(b*a)*c$, so $b=c$.
+\end{proof}
+
+\begin{exam}
+In $\Z$ under addition where $0$ is the identity, every integer
+$n\in\Z$ has an inverse $-n$ because $n+(-n) = 0=(-n)+n$.  On the
+other hand, for $\Z$ under multiplication (where $1$ is the identity),
+the only elements with inverses are $1$ and $-1$ (because $1\cdot 1 =
+1$ and $(-1)\cdot (-1) = 1$).
+\end{exam}
+
+\begin{notation}
+  In almost every binary operation we encounter, it will already be
+  naturally an addition or a multiplication.  Addition in every case
+  will be commutative, and we will only use $+$ for binary operations
+  which are commutative.  In these cases, the inverse of $a$ will be
+  denoted by $-a$.
+
+  In other cases, we will generally use $\cdot$ instead of $*$ for the
+  operation, or use no symbol at all for the operation and just write
+  $ab$ for $a*b$.  In these cases, we are not assuming the operation
+  is commutative unless it is explicitly mentioned.  The inverse of an
+  element $a$ (if it exists) is then denoted by $a^{-1}$.
+\end{notation}
+
+\subsection{Definition of group}
+\begin{defn}
+  A {\em group} is a set $G$ with a binary operation $*$ such that 
+\begin{enumerate}
+\item $*$ is associative
+\item $G$ has an identity element for $*$
+\item every element of $G$ has an inverse.
+\end{enumerate}
+\end{defn}
+
+\begin{exam}
+  Addition is a group operation on many familiar sets: $\Z$, $\Q$,
+  $\R$, $\C$.  Note, $\Z^+$ is not a group for addition because it
+  does not have an identity element.  Similarly, $\mathbb N$ is not a
+  group for addition because it contains elements which do not have
+  inverses (such as $3$, or $5$, or any  positive integer).
+\end{exam}
+
+\begin{exam}
+  Multiplication is a group operation on other familiar sets:
+  $\Q^\times$, $\R^\times$, $\C^\times$, and $\R^+$.
+\end{exam}
+
+% \begin{exam}
+%   The one element set $G=\{0\}$ is a group under addition.  The
+%   identity element is of course $0$ (it is the only option), and $0$
+%   is its own inverse.
+
+%   In fact, $\{0\}$ is a group under multiplication.  In this case, $0$
+%   functions as the identity for multiplication, and since $0\cdot
+%   0=0$, it is also its own inverse.
+
+%   In fact, these two examples are the same.  The set is the same
+%   $\{0\}$, and the binary operation is the same (i.e., the function
+%   $G\times G\to G$ has a unique ordered pair $((0,0), 0)$ in both
+%   cases).  The only difference is the notation we use for the binary
+%   operation.
+% \end{exam}
+
+\begin{remark}
+From Propositions \ref{unique-identity} and \ref{unique-inverse}, we
+know that the identity element of a group is unique and that each
+element has a unique inverse.
+\end{remark}
+
+\begin{defn}
+  A group $G$ is {\em abelian} if the operation is commutative.
+\end{defn}
+It might seem more natural to call these groups commutative groups,
+but the terminology is universally accepted in
+mathematics\footnote{The term {\em abelian} comes from the name of a
+  mathematician, Abel.}.  The additive and multiplicative groups given
+above are all abelian.  Here is an example which is not.
+\begin{exam}
+  Let $G=\GL_2(\R)$, the set of $2\times 2$ matrices over the real
+  numbers non-zero determinant.  This is a group under matrix
+  multiplication with identity being the $2\times 2$ identity matrix
+  and inverses being inverse matrices (using that for $2\times 2$
+  matrices over $\R$, a matrix has an inverse if and only if it
+  has non-zero determinant).  However, this group
+  is not commutative.
+\end{exam}
+
+\section{Subgroups}
+
+We often have groups which are subsets of bigger groups.  Suppose $G$
+is a group and $H\seq G$.
+If we restrict the domain of the binary operation from
+$G\times G$ to $H\times H$, and then want the results to always lie in
+$H$.  In other words, for all $a,b$,
+\[ a,b\in H \implies a*b\in H.\]
+When this happens, we say that $H$ is {\em closed under $*$}.
+
+\begin{defn}
+  If $G$ is a group with operation $*$ and $H\seq G$, then we say that
+  $H$ is a {\em subgroup} of $G$ if
+  \begin{enumerate}
+  \item $H$ is closed under $*$,
+  \item the identity element $e$ for $G$ is in $H$,
+  \item for all $a\in H$, its inverse (in $G$) is contained in $H$.
+  \end{enumerate}
+\end{defn}
+
+One could say that a subset is a subgroup if it is closed under the
+binary operation, contains the identity, and is closed under
+inverses.
+
+Our definition is not an literal match to the concept (subset which is
+also a subgroup).  The missing steps are explored in the exercises.
+
+\begin{exam}
+  Addition is a binary operation on $\R$.  If we restrict to rational
+  numbers $a,b\in\Q$, then $a+b\in\Q$, so $\Q$ is closed for $+$.
+\end{exam}
+\begin{exam}
+  On the other hand, division is a binary operation on $\Q^+$, the set
+  positive rational numbers.  However, if we try to restrict to
+  positive integers $a,b\in\Z^+$, then $a\div b$ is a positive
+  rational number, but it need not be a positive integer.  For
+  example, $3\div 7\not\in\Z^+$.  So $\Z^+$ is not closed under
+  division.
+\end{exam}
+
+The first problem makes it easier to prove that an element of a group
+is the identity element.
+\begin{prob} \label{ident-prob}
+Let $G$ be a group with identity $e$.  Then $c*c=c$ if and only if $c=e$.
+\end{prob}
+
+\begin{prob}
+  We would like to define subgroup as follows: ``If $G$ is a group and
+  $H\seq G$, then $H$ is a {\em subgroup} of $G$ if the binary
+  operation for $G$ induces a binary operation on $H$ and $H$ is a
+  group for that operation.''  A subset which is a subgroup under our
+  definition definitely satisfies this definition as well.  To show
+  the implication goes both ways, prove that if $H$ satisfies the
+  quoted statement, then
+  \begin{enumerate}
+  \item $H$ is closed for $*$,
+  \item $e_G=e_H$ (hint, use problem~\ref{ident-prob})
+  \item for all $a\in H$, the inverse of $a$ in $G$ is in $H$.
+  \end{enumerate}
+\end{prob}
+
+
+\section{Groups acting on sets}
+
+Groups are fun, but they are much more fun when they are doing
+something, like acting on a set.
+\begin{defn}
+  Let $G$ be a group and $S$ a set.  An {\em action} of $G$ on $S$ is a
+  function
+  \[ \cdot:G\times S\to S\]
+  such that
+  \begin{enumerate}
+  \item for all $s\in S$, $e\cdot s = s$ where $e$ is the identity of
+    $G$;
+  \item for all $g_1, g_2\in G$ and all $s\in S$, $g_1\cdot (g_2\cdot
+    s) = (g_1g_2)\cdot s$.
+  \end{enumerate}
+\end{defn}
+In the second condition, both dots on the left hand side represent the
+action where as $g_1g_2$ on the right hand side is multiplication
+within the group.
+
+We will see several examples of group actions in the next section
+where they have applications to cryptography, so we just give two
+quick ones now.
+
+\begin{exam}
+The group $G=\Z$ acts on $S=\R$ by $n\cdot a=n+a$.  In other words,
+we use addition to define the action.
+\end{exam}
+
+\begin{prob}
+  Prove that the action of $\Z$ on $\R$ given by $n\cdot a=n+a$ is a
+  group action.
+\end{prob}
+
+\begin{exam} If $G$ is a group, define an action of $G$ on $G$ by $g\cdot
+a=ga$.  In other words, we use the group operation to define the
+action.  This particular action is famous and is known as {\em left
+  translation}.
+\end{exam}
+
+\begin{prob}
+  Prove that if $G$ is a group, then left translation gives a
+  group action.
+\end{prob}
+
+
+\section{Cryptosystems from group actions}
+For background and notation for cryptosystems, see Section~\ref{crypto-101}.
+
+
+Suppose $G$ is a group which acts on a set $A$, and we find a
+way to match elements of $A$ with the plaintexts.  Then we will let
+$A$ also be the set of ciphertexts, and $G$ is the set of keys.  Given
+a key $k\in G$ and a plaintext $P\in A$, our encryption function is
+\[ e_k(P) = k\cdot P\]
+where the right hand side comes from the group action.  The decryption
+function uses the inverse of $k$ in the group:
+\[ d_k(C) = k^{-1}\cdot P\]
+To check that this works, we compute:
+\begin{align*}
+d_k(e_k(P)) &= d_k(k\cdot P) \\
+  &= k^{-1}\cdot (k\cdot P) \\
+  &= (k^{-1}k)\cdot P & \text{property 2 of group action} \\
+  &= e\cdot P \\
+  &= P & \text{property 1 of group action}
+\end{align*}
+We now consider some classic ciphers, and see how they are examples of
+this one idea.
+\subsection{Shift Cipher}
+For the {\em shift cipher},
+$\calP=\calC=\calA=\calK=\Zn=G$.
+We let $G$ act on itself by left
+translation, so for a key $k\in G$, our encryption is given by
+\[ e_k(p) = p+k\]
+where the addition is taken modulo $n$ since we are working in $\Zn$.
+Decryption is simply
+\[ d_k(c) = c-k.\]
+
+
+\subsection{Affine Cipher}
+For the {\em affine cipher}, we let $\calA=\calP=\calC=\Zn$.
+Our group is
+the {\em affine group modulo $n$}:
+\[ \textit{Aff}(n) = \{ ax+b\mid a\in \Zn^\times\text{ and } b\in\Zn\}\]
+where the operation is composition.
+\begin{prob}
+  Verify that if $n\in\Z^+$, then $\textit{Aff}(n)$ is a group.
+\end{prob}
+If $ax+b\in \calK= \textit{Aff}(n)$, then $ax+b$ acts on $m\in \Zn$ by
+\[ (ax+b)\cdot m = am+b\]
+with the computation done modulo $n$.  This gives encryption functions
+\[ e_{ax+b}(p) = ap+b.\]
+Since $a\in \Z_n^\times$,
+there exists $a'\in\Z_n^\times$ such that $aa'\equiv 1\pmod n$.  Then
+\[d_{ax+b}(c) = a'(c-b).\]
+
+\subsection{Hill Cipher}
+For the {\em Hill cipher}, we let $\calA=\Zn$ and pick
+$m\in\Z^+$.  Then we take $\calP=\calC=\Z_n^m$.
+The group 
+\[ G=\GL_m(\Zn)=\{A\in M_m(\Zn)\mid \det(A)\in \Z_n^\times\}\]
+is the group of matrices over $\Zn$ which are invertible for matrix
+multplication.  It acts on $\Z_n^m$ in the usual way of matrix times
+vector.
+
+If $A\in \calK=\GL_m(\Zn)$ and $\vec p \in \Z_n^m$, then encryption is
+\[ e_A(\vec p) = A\vec p\]
+and decryption is
+\[ d_A(\vec c) = A^{-1}\vec c,\]
+where $A^{-1}$ is the inverse of $A$ modulo $n$.
+
+
+\subsection{Permutation Cipher}
+Let $n\in\Z^+$.  A {\em permutation} on a set $A$ is a bijective
+function $f:A\to A$.  The {\em symmetric group} on $A$ is
+\[ S_A = \{ f:A\to A\mid \text{$f$ is a permutation}\}.\]
+This is a group under composition:
+\begin{itemize}
+\item the composition of bijective functions is bijective
+\item function composition is always associative
+\item the identity function $I_A:A\to A$ given by $I_A(a)=a$ for all
+  $a\in A$ acts as the identity under composition
+\item bijective functions have inverse functions (which are also bijective)
+\end{itemize}
+For any set $A$, $S_A$ acts on $A$ by $f\cdot a=f(a)$ for any $f\in S_A$ and any
+$a\in A$.
+
+In the special case of $A=\{1\cots n\}$, we write $S_n$ for the set of
+permutations.  Then $S_n$ acts on $n$ tuples from another set $B$ by
+\[ \sigma \cdot (b_1\cots b_m) = (b_{\sigma(1)}\cots b_{\sigma(n)}).\]
+
+So, we fix $n$ and take $\calA^n=\calP=\calC$ and $\calK=S_{n}$.  If
+$\sigma\in S_n$, encoding is given by
+\[ e_\sigma(a_1\cots a_n) = (a_{\sigma(1)}\cots a_{\sigma(n)})\]
+and decoding by
+\[ d_\sigma(a_1\cots a_n) = (a_{\sigma^{-1}(1)}\cots a_{\sigma^{-1}(n)}).\]
+
+\subsection{Substitution Cipher}
+
+
+If $\calA$ is our alphabet, we let $\calP=\calC=\calA$ and key space
+$\calK=S_\calA$. 
+Then for any $f\in S_\calA$, we encrypt and decrypt by
+\[ e_f(p) = f(p) \quad\text{ and }\quad d_f(c) = f^{-1}(c).\]
+
+Many other ciphers are special cases of the substitution cipher, such
+as shift, affine, and RSA.  If $n=|\calA|$, then the size of the key
+space is $n!$, which grows very quickly.  This means that to
+communicate a key with large $n$, one must transmit many bits.  The
+more specialized ciphers have smaller key spaces, and hence,
+transmitting the key is easier.  If $\calA$ is an ordinary alphabet
+from a natural language, then this cipher can be readily attacked with
+frequency analysis.
+
+\subsection{Vigen\`ere Cipher}
+\label{vigenere}
+We first introduce a way to construct new groups from others which
+we will need later.
+
+If $G_1$ and $G_2$ are groups with operations $*_1$ and $*_2$, then
+we can make $G_1\times G_2$ into a group with the operation
+\[ (a_1,a_2)*(b_1,b_2) = (a_1*_1 b_2, a_2*_2 b_2) \]
+It has identity $(e_1, e_2)$ and the inverse of an element $(a_1,a_2)$
+is $(a_1^{-1}, a_2^{-2})$ where the inverses are computed in $G_1$
+and $G_2$ respectively.  The resulting group is called the {\em
+direct product} of $G_1$ and $G_2$, and is denoted $G_1\times G_2$.
+In some cases, it may also be denoted by $G_1\oplus G_2$.
+
+This construction can be iterated with a list of groups
+$G_1\cots G_n$.  The elements then are $n$-tuples where the $i$th
+coordinate comes from $G_i$.
+
+For a Vigen\`ere cipher, we take $m$ to be a positive integer, and let
+$\calP=\calC=\calA^m$.  Let $n=|\calA|$ and identify $\calA$ with
+$\Zn$.  Our group is $G=\Zn\times\Zn\times\cdots \times \Zn$ where we
+use $m$ copies of $\Zn$.  So a key is an $m$-tuple of elements of
+$\calA$, i.e., an $m$-letter word.  The group action is $G$ acting on
+itself by left translation.
+
+\subsection{RSA}
+The main feature of RSA is that it is a public key cryptosystem.  But
+under the hood, it works on the same principle of groups acting on
+sets.
+
+Let $N$ be a positive integer which is a product of distinct primes.
+We let $\calP=\calC=\Z_N$.  The traditional choice for the group is
+$G=\calK=\Z_{\varphi(N)}^\times$.  It acts on $\Z_N$ as follows
+\begin{align*}
+\Z_{\varphi(N)}^\times\times\Z_N &\to \Z_N   \\
+(a, b) &\mapsto b^a
+\end{align*}
+For encryption, we pick a key $a$ such that $\gcd(a, \varphi(N))=1$,
+i.e., such that $a\in\Z_{\varphi(N)}$ and then
+\[ e_a(m) = m^a \bmod N.\]
+For decryption, we find $b$ such that $ab\equiv 1\pmod{\varphi(N)}$,
+but this is just $a^{-1}\in\Z_{\varphi(N)}^\times$ and
+\[ d_a(c) = c^b\bmod N.\]
+
+It may be hard to see why we take the hypothesis that the prime
+factors of $N$ must be distinct.  We illustrate the problem with an
+example.
+\begin{exam}
+  Let $N=9=3^2$, so $\varphi(N) = 6$.  Then $1\equiv 7
+  \pmod{\varphi(N)}$ and certainly $\gcd(1,6)=1$, so $1\in
+  \Z_6^\times$.  If we compute the group action with $1$ and
+  $3\in\Z_9$, we get $3^1=3$, but if we use $7$, we get $3^7\equiv
+  0\pmod 9$, a different result.  This is not a group action because
+  the ``action'' needs to be a function, and it is not well-defined.
+\end{exam} 
+\begin{prob}
+  Suppose $N$ is a product of distinct primes and $m=\varphi(N)$.
+  Prove that if $[a]_m=[b]_m\in\Z_m$ and $[c]_N\in\Z_N$, then $[c^a]_N=[c^b]_N$. 
+\end{prob}
+
+\subsection{LFSRs}
+\begin{comment}
+\textbf{This section is not finished.  It needs an explanation of
+how to generically make a stream cipher from a group action,
+what an LFSR is, and how the general process produces an LFSR.
+Then again, it may be deleted at a later time.}
+\end{comment}
+
+A {\em linear feedback shift register}, or LFSR, is a type of stream
+cipher.  We imagine that the plaintext has been converted to a long
+bitstring (string of zeros and ones).  The idea is to use a small
+amount of information to produce a seemingly random infinite
+bitstring, called the key stream), which is added modulo $2$ to the
+plaintext to obtain the ciphertext.  Decryption is accomplished by
+adding the key stream again.
+
+We will not go into the details here, but one can form a general
+stream cipher based on a group acting on a set.  An LFSR is a special
+case of this general construction.  The set is $\Z_2^m$, the group
+is $\GL_m(\Z_2)$, and the action is the usual matrix times vector.
+\begin{comment}
+Let $n$ be a positive integer.  An $n$-stage LFSR generates its key
+stream by a linear recurrence relation
+\[ x_{k+n} = c_{n-1} x_{k+n-1}\pots c_0 x_k\]
+where $(c_0\cots c_{n-1})\in\Z_2^n$ is a fixed vector called the
+taps.  Note that if $c_0=0$, then the recurrence relation has
+effectively at most $n-1$ terms, so would be an $n-1$-stage LFSR.  So,
+we assume $c_0=1$.
+\end{comment}
+
+%We can picture an $n$-stage LFSR as follows
+%\[\begin{CD}
+%@| @. @| @. \\
+%\boxed{x_k} @>>> \boxed{x_{k+1}} @>>> \cdots @>>> \boxed{x_{k+n-1}} @>>> x_k \\
+%\end{CD}
+%\]
+
+%The key stream is also determined by  the {\em initial
+% loading} of the LFSR, i.e., the first $n$ bits in the sequence.
+
+
+
+\section{Isomorphisms and homomorphisms}
+
+Consider the following two operation tables for $\{1,-1\}$ under
+multiplication and $\Z_2$:
+\[
+\begin{array}{c||c|c}
+\cdot & 1 & -1 \\ \hline\hline
+1 & 1 & -1 \\ \hline
+-1 & -1 & 1
+\end{array}
+\qquad
+\begin{array}{c||c|c}
++ & 0 & 1 \\\hline\hline
+0 & 0 & 1 \\ \hline
+1 & 1 & 0
+\end{array}
+\]
+Then we can get from the table on the left to the table on
+the right by simply renaming elements systematically.  In
+particular, if we take the table on the left and use the
+following replacements:
+\begin{align*}
+1 &\mapsto 0\\
+-1 &\mapsto 1
+\end{align*}
+This is the idea of an isomorphism.  Renaming elements from one set
+to elements of another is formalized as a bijective function between
+the sets $f:G_1\to G_2$.  
+The idea that the group tables match up can be thought of elements
+$a\in G_1$ have their old name, $a\in G_1$, and a new name 
+$f(a)\in G_2$.  Then the group tables matching after renaming amounts
+to, 
+\begin{quote}
+if we take any two elements of $G_1$, multiply in $G_1$, and then rename
+the result, it is the same as first renaming the elements and then
+multiplying them in $G_2$.
+\end{quote}
+Formally, this leads to
+\begin{defn}
+  If $G_1$ is a group with operation $*$ and $G_2$ is a group with
+  operation $*'$, then an {\em isomorphism from $G_1$ to $G_2$} is a
+  bijective function
+  \[ f:G_1\to G_2\]
+  such that
+  \[ f(a*b)  = f(a)*'f(b)\qquad\text{for all $a,b\in H$.}\]
+  We then say that $G_1$ and $G_2$ are {\em isomorphic} and write
+  $G_1\cong G_2$.
+\end{defn}
+The idea of ``same except for renaming of elements'' should behave
+like an equivalence relation.  The formal proof of this is left
+as a sequence of exercises.
+\begin{prob}
+Prove that every group is isomorphic to itself.  (Hint: for any
+set $G$, there is a simple bijective function $G\to G$.)
+\end{prob}
+\begin{prob}
+Suppose $G_1$ is isomorphic to $G_2$.  Prove that $G_2$ is isomorphic
+to $G_1$.  (Hint: the hypothesis gives you a bijective function
+$G_1\to G_2$; you need to start by constructing a bijective function
+$G_2\to G_1$.
+\end{prob}
+\begin{prob}
+Suppose $G_1$ is isomorphic to $G_2$ and $G_2$ is isomorphic to $G_3$.
+Prove $G_1$ is isomorphic to $G_3$.
+\end{prob}
+Here is an example of an isomorphism from familiar objects.
+\begin{prob}
+Prove that the group $\R$ under addition is isomorphic to the group
+$\R^+$ under multiplication. (Hint: try an exponential map.)
+\end{prob}
+
+It is useful to consider functions between groups which respect the
+operations, but are not necessarily bijective:
+\begin{defn}
+  If $H$ is a group with operation $*$ and $K$ is a group with
+  operation $*'$, then a function
+  \[ f:H\to K\]
+  such that
+  \[ f(a*b)  = f(a)*'f(b)\qquad\text{for all $a,b\in H$}\]
+  is called a {\em homomorphism from $H$ to $K$}.
+\end{defn}
+
+\begin{exam}
+  The inclusion map $i:\Z\to \Q$ (defined by $i(n)=n$ for all integers
+  $n$) is a homomorphism which is 1-1, but not onto.
+\end{exam}
+\begin{exam}
+  If $n$ is a positive integer, the map $f:\Z\to \Zn$ given by 
+  \[ f(a) = \text{ the congruence class of $a$ modulo $n$} \]
+  is a homomorphism called the {\em reduction map}.  It is onto, but
+  not 1-1.
+\end{exam}
+\begin{exam}
+  If $H$ and $K$ are any two groups, the constant function $f:H\to K$
+  given by $f(a)=e_K$ for all $a\in H$ is a homomorphism, called the
+  {\em trivial map}.  If $H$ and $K$ have more than one element each,
+  it is neither 1-1 nor onto.
+\end{exam}
+
+We collect the basic properties of homomorphisms in the next proposition.
+\begin{prop}
+If $f:H\to K$ is a group homomorphism, then
+\begin{enumerate}
+\item $f(e_H) = e_K$
+\item for all $h\in H$, $f(h^{-1})=f(h)^{-1}$
+\end{enumerate}
+\end{prop}
+\begin{proof}
+  We start by noting that $f(e_H)=f(e_H*e_H) = f(e_H)f(e_H)$, so $f(e_H)=e_K$ by
+  exercise~\ref{ident-prob}.
+  
+  Let $h\in H$.  We prove the second part by showing $f(h^{-1})$ does the job of an
+  inverse.  So we compute
+  \[ f(h)f(h^{-1}) = f(hh^{-1}) = f(e_H) = e_K\]
+  and
+  \[ f(h^{-1})f(h) = f(h^{-1}h) = f(e_H) = e_K\,.\]
+  So, $f(h^{-1}) = f(h)^{-1}$.
+\end{proof}
+
+\begin{exam}
+  In linear algebra, one considers vector spaces and linear
+  transformations between them.  According to the definitions,
+  every vector space is an abelian group for $+$, and every
+  linear transformation is a homomorphism.
+\end{exam}
+
+An important construction for homomorphsims is its kernel.  In
+the linear algebra situation, this is the same as the kernel, which
+is also called the null space.
+\begin{defn}
+ If $f:G\to K$ is a group homomorphism, the {\em kernel} of $f$ is
+ \[ \ker(f) = \{g\in G\mid f(g) = e_K\}.\]
+\end{defn}
+\begin{prob}
+Suppose $f:G\to K$ is a homomorphism.  Prove $\ker(f)$ is a subgroup
+of $G$.
+\end{prob}
+
+An important family of examples of homomorphisms applies to any
+abelian group.
+\begin{exam}
+  Suppose $G$ is an abelian group and $m\in\Z$.  Then the {\em
+    multiplication by $m$ map} in additive notation is defined by
+  \begin{align*}
+    [m]:G&\to G \\
+     g&\mapsto mg
+  \end{align*}
+  If we are using multiplicative notation, $[m](g) = g^m$.  This is a
+  homomorphism whenever $G$ is abelian.
+\end{exam}
+Our main interest is the case when $m\in\Z^+$.
+\begin{prob}
+  Suppose $G$ is an abelian group written multiplicatively and
+  $m\in\Z^+$.  Prove that the multiplication by $m$ map is a
+  homomorphism from $G$ to $G$.
+\end{prob}
+Note, if $m=0$, then $[0](g)=g^0=e$ for all $g\in G$.  In other words,
+$[0]$ is the trivial map from $G$ to $G$.
+
+
+
+\subsection{Applications to $\Zn$}
+The multiplication by $m$ map applies to all abelian groups.  Since
+all finite abelian groups are built from cyclic groups, it helps to
+understand this map on $\Zn$ in detail.  Ultimately, this comes down
+to statements about congruences.  Here, we determine the kernel.
+
+
+\begin{prop}
+  If $n\in \Z^+$, $a\in \Z$ and $d=\gcd(a,n)$, then for all $x\in \Z$,
+  \[ ax\equiv 0\pmod n \iff dx\equiv 0 \pmod n.\]
+\end{prop}
+\begin{proof}
+  $(\Rightarrow)$ 
+  Suppose $ax\equiv 0\pmod n$.  By the Bezout property \ref{bezout},
+  there exists $r,s\in\Z$ such that $ra+sn=d$.  Then
+  \[ dx\equiv (ra+sn)x \equiv r(ax)+n(sx)\equiv r\cdot 0+0\cdot
+  (sx)\equiv 0 \pmod n.\]
+
+  $(\Leftarrow)$ 
+  Suppose $dx\equiv 0\pmod n$.  Since $d=\gcd(a,n)$,
+  $a=dk$ for some integer $k$.  Then
+  \[ ax \equiv (dk)x\equiv k(dx)\equiv k\cdot 0\equiv 0\pmod n.\]
+\end{proof}
+
+\begin{cor} \label{znkernels}
+  If $n\in\Z^+$, $m\in\Z$, and $d=\gcd(n,m)$,  then as homomorphisms
+  from $\Zn$ to itself, $\ker([m]) = \ker([d])$.
+\end{cor}
+
+
+\section{Cyclic groups}
+If $G$ is a group and $g\in G$, then we use notation familiar notation
+for repeating the operation.  For example,
+\begin{align*}
+g^2 &= gg\\
+g^3&= ggg
+\end{align*}
+Working backwards, we also want $g^1=g$, $g^0=e$, $g^{-1}$ to be the
+inverse of $g$ (which is already our notation).
+
+
+\begin{defn}
+  Let $G$ be a group and $g\in G$.  Then the {\em cyclic subgroup
+    generated by $g$} is
+  \[ \gen g = \{ g^n\mid n\in\Z\}.\]
+\end{defn}
+If the group uses additive notation, then
+\[ \gen g = \{ng\mid n\in\Z\}.\]
+In either case, we should justify the name.
+\begin{prop}
+  Let $G$ be a group and $g\in G$.  Then $\gen g$ is a subgroup of $G$.
+\end{prop}
+\begin{proof}
+  First note that $e=g^0\in \gen g$, and if $g^n\in\gen g$, then
+  $(g^n)^{-1} = g^{-n}\in \gen g$.  Finally, if $g^n,g^m\in \gen g$,
+  then $g^n\cdot g^m=g^{n+m}\in \gen g$.  So, $\gen g$ is a subgroup
+  of $G$.
+\end{proof}
+
+\section{Order and torsion}
+Here we introduce two closely related notions for elements of a group, {\em order}
+and {\em torsion}.
+
+\begin{defn}
+If $G$ is a group, $g\in G$, and $n\in\Z^+$, then we say that {\em $g$ is $n$-torsion}
+if $g^n=e$.
+\end{defn}
+In additive notation, $g$ is $n$-torsion if $n\cdot g=0$.
+
+\begin{defn}
+  Let $G$ be a group and $g\in G$.
+  \begin{enumerate}
+  \item If $g^n\neq e$ for all $n\in\Z^+$, we say that $g$ has {\em infinite order}.
+  \item Otherwise, the {\em order of $g$} is the smallest positive integer $n$ such that
+  $g^n=e$.
+  \end{enumerate}
+  In either case, we denote the order of $g$ by $|g|$.
+\end{defn}
+
+\begin{exam}
+  In $\Cstar$, $i$ (a root of $x^2+1$) satisfies $i^4=1$, but
+  $i$, $i^2=-1$, $i^3=-i$ are all not equal to $1$, so $i$ has order $4$.  
+  As far as torsion
+  goes, we have $i^4=i^8=i^{12}=1$, so $i$ is $4$-torsion, and also 
+  $8$-torsion, and $12$-torsion, and so on.
+\end{exam}
+In this example, we can see a general phenominon, namely that an element
+of a group has only one order, but it can be $m$-torsion for many values
+of $m$.
+
+\begin{exam}
+For $2\in \Rstar$, $2^n\neq 1$ for any $n\in\Z^+$, so it is an element 
+of infinite order.  It is not $n$-torsion for any $n$.
+\end{exam}
+
+We will see soon than an element in a finite group always has finite order, so that will
+be the case in which we are most interested.
+
+\begin{thm} \label{orders-thm}
+  Let $G$ be a group and $g\in G$.
+  \begin{enumerate}
+  \item If $g$ has infinite order, then all $g^i$ are distinct for $i\in \Z$.
+  Moreover, $\Z \cong \gen g$ by the map $i\mapsto g^i$.
+  \item If $g$ has finite order $n$, then
+  \begin{enumerate}
+  \item $\gen g=\{g^0\cots g^{n-1}\}$ which has order $n$
+  \item if $i\in\Z$, then $g^i=g^{i \bmod n}$
+  \item for all $i,j\in\Z$, 
+  \[ g^i=g^j \iff i\equiv j \pmod n\]
+  \item for all $i\in \Z$,
+    \[ g^i=e \iff n\mid i\]
+  \item $\Zn\cong \gen g$ by the map $[i]_n\mapsto g^i$.
+  \end{enumerate}
+  \end{enumerate}
+\end{thm}
+\begin{proof}
+  We separate the two basic cases by a different criteria, but we will
+  quickly see that they divide as described in the theorem.
+
+  First suppose $g^i$ are distinct for all $i\in\Z$.  Then clearly $g$
+  has infinite order.  The map $f:\Z\to \gen g$ given by $f(i)=g^i$ is
+  then a bijection, and for all $i,j\in\Z$, 
+  $$f(i+j)=g^{i+j} =g^ig^j=f(i)f(j).$$
+  Thus, $f$ is an isomorphism.
+
+  On the other hand, if they are not all distinct, then $g^i=g^j$ for
+  some $i<j$.  Multiplying by $g^{-i}$ we get $g^ig^{-i} = g^jg^{-i}$
+  which implies $e=g^0=g^{j-i}$.  In other words,
+\begin{equation} \label{power-rep}
+g^i=g^j \implies g^{j-i} = e
+\end{equation}
+Since $i<j$, $j-i\in\Z^+$, so $g$ has finite order.  Let $n=|g|$.
+
+If $i\in\Z$, then by the Division algorithm \ref{div-alg}, there
+exists $q,r\in\Z$ such that $i=nq+r$, $0\leq r<n$.  Then
+\[ g^i = g^{nq+r} = (g^n)^q g^r = e^q\cdot g^r = g^r.\]
+Since $r=i\bmod n$, this gives (b) and that $\gen g=\{g^0\cots
+g^{n-1}\}$.  To show that this set has order $n$, we need to show that
+$g^0\cots g^{n-1}$ are distinct.
+
+Suppose not.  Then there exist $i,j\in\Z$ such that $g^i=g^j$ and
+$0\leq i<j<n$.  But by implication~\ref{power-rep} above, this implies
+$g^{j-i}=e$.  The inequalities on $i$ and $j$ imply $0< j-i < n$,
+contradicting that $n$ is the order of $g$.  This completes the proof
+of (a).
+
+For part (c), note
+\begin{align*}
+ g^i=g^j &\iff g^{i\bmod n} = g^{j\bmod n} \\
+&\iff i\bmod n=j\bmod n &\text{since these powers are distinct} \\
+&\iff i\equiv j \pmod n
+\end{align*}
+
+Part (d) follows from (c) letting $j=0$.
+
+Finally, for part (e) we note that the given map, $f:\Zn\to\gen g$
+given by $f([i]_n) = g^i$ is a bijection from
+(c) and the fact that $[i]_n=[j]_n$ iff $i\equiv j\pmod n$.  To see
+that it is a homomorphism, we check
+\[ f([i]_n+[j]_n) = f([i+j]_n) = g^{i+j}=g^ig^j=f([i]_n)f([j]_n)\,.\]
+\end{proof}
+\begin{cor}
+  If $G$ is a group and $g\in G$, then the order of $g$ equals the
+  order of the cyclic subgroup $\gen g$.
+\end{cor}
+
+Theorem~\ref{orders-thm} establishes the connection between the
+order of an element and for which $m$ it is $m$-torsion.
+\begin{cor}
+  If $G$ is a group and $g\in G$ has order $n$, then $g$ is
+  $m$-torsion iff $n \mid m$.
+\end{cor}
+One of the reasons $m$-torsion elements are useful to work with is
+that they have an algebraic structure when $G$ is abelian.
+\begin{defn}
+  Let $G$ be an abelian group and $m\in\Z^+$.  We let
+  \[ G[m] = \{g\in G\mid g^m=e\}.\]
+  This is refered to as the {\em $m$-torsion subgroup} of $G$.
+\end{defn}
+Before going any farther, we should justify the terminology.
+\begin{prob}
+  Prove that if $G$ is an abelian group, then for every $m\in\Z^+$,
+  $G[m]$ is a subgroup of $G$.
+\end{prob}
+We note that for non-abelian groups, the corresponding sets do not
+have to be subgroups.
+
+The $m$-torsion subgroup contains all of the $m$-torsion elements.
+Note, the analogous construction for elements of order $m$ is not a
+subgroup (unless $m=1$), since the identity element always has order
+$1$ and a subgroup must contain the identity.
+
+
+\subsection{The most important group for crytography}
+Here we analyze orders of elements in $\Zn$.
+\begin{prop}
+  Let $n\in\Z^+$, $a\in \Zn$, and $d=\gcd(a,n)$.  Then
+  \[ \gen a = \gen d.\]
+\end{prop}
+\begin{proof}
+  Since $d\mid a$, $a=dk$ for some $k\in \Z$.  Then $a\in \gen d$, so
+  $\gen a = \gen d$.
+
+  On the other hand, from the Extended Euclidean algorithm, we have
+  $d=ra+sn$ for some $r,s\in\Z$.  So, 
+  \[ d\equiv ra\pmod n \implies d\in \gen a \text{ in $\Zn$.}\]
+\end{proof}  
+\begin{prop}
+  If $n,d\in\Z^+$ and $d\mid n$, then $|\gen d|=\frac n d$.
+\end{prop}
+\begin{proof}
+  First note that for $k\in \{1,2\cots \frac n d -1\}$, $1\leq kd <
+  n$, so these elements are non-zero in $\Zn$.  However 
+ \[ \frac n d d = n \equiv 0\pmod n.\]
+  So, $|d|=\frac n d$, which in turn implies $|\gen d|=\frac n d$.
+\end{proof}
+
+  A consequence of this proof is that when $d\mid n$, in $\Zn$ we have
+  \[ \gen d = \left\{0, d, 2d\cots \left(\frac n d-1\right) \cdot d\right\}.\]
+
+\begin{cor}
+  If $n\in\Z^+$, $a\in \Z$ and $d=\gcd(n,a)$, then in $\Zn$,
+  $|a|=\frac nd$.
+\end{cor}
+\begin{proof}
+  Combining prior results, $|a|=|\gen a| = |\gen d| = \frac nd$.
+\end{proof}
+
+We can reframe some of these results as statements about congruences.
+\begin{cor}
+  If $n\in\Z^+$, $a,b\in\Z$, then the conguence
+  \[  ax\equiv b\pmod n\]
+  has a solution if and only if $\gcd(a,n)\mid b$.
+\end{cor}
+\begin{proof}
+  The existence of a solution is equivalent to $b\in\gen a$ in $\Zn$,
+  but $\gen a = \gen{\gcd(a,n)}$.
+\end{proof}
+
+\subsection{Products}
+
+As seen in the Section~\ref{vigenere}, if $G_1\cots G_n$ are groups,
+then we can construct a new group with the set $G_1\times\cdots\times G_n$ with
+operations done coordinatewise.  These groups are especially important
+for us since elliptic curves give rise to finite abelian groups, which
+are classified by the following theorem, which says that every finite
+abelian group is isomorphic to a product of cyclic groups.
+\begin{thm}[Classification of finite abelian groups]
+\label{finiteabelian}
+  If $A$ is a finite abelian group of order greater than $1$, then
+  there exists a unique list of integers $n_1\cots n_k$ with $1<n_1$,
+  $n_i\mid n_{i+1}$ for all $1\leq i<k$ such that 
+  \[ A \cong \Z_{n_1}\times\cdots\times \Z_{n_k}.\]
+\end{thm}
+From the Theorem~\ref{crt} below, the Chinese Remainder Theorem, we
+have isomorphisms
+\[ \Z_{mn} \cong \Z_m\times \Z_n \quad\text{when $\gcd(m,n)=1$}.\]
+This allows for an alternate statement of the theorem where each
+cyclic group in the direct product has prime power order.  Both
+versions are useful at different times.
+
+We will defer the proof of Theorem~\ref{finiteabelian} to a group
+theory course.  Nonetheless, it tells us that if we can count torsion
+elements in a direct product of groups, then we can handle any finite
+abelian group.
+
+Suppose $(g_1\cots g_k)\in G_1\times\cdots \times G_k$.  Since
+operations are done coordinatewise, if $j\in\Z^+$, then
+\[ (g_1\cots g_k)^j = (g_1^j\cots g_k^j).\]
+Thus,
+\begin{align*}
+(g_1\cots g_k)\text{ is $m$-torsion}
+&\iff  (g_1\cots g_k)^m=(e_1\cots  e_k) \\
+&\iff  (g_1^m\cots g_k^m)=(e_1\cots  e_k) \\
+&\iff g_i^m=e_i \text{ for all $i$} \\
+&\iff m \text{ is a multiple of $g_i$ for all $i$}
+\end{align*}
+This is the main part of the proof of the following.
+\begin{prop}
+If $G_1\cots G_n$ are groups and $(g_1\cots g_k)\in G_1\times\cdots
+\times G_k$, then
+\begin{enumerate}
+\item $(g_1\cots g_k)$ has finite order if and only if $g_i$ has
+  finite order for all $i$
+\item if $(g_1\cots g_k)$ has finite order, then
+\[ |(g_1\cots g_k)| = \operatorname*{lcm}_{1\leq i \leq k} |g_i|\]
+\end{enumerate}
+\end{prop}
+
+\section{Rings}
+The definition of a ring applies to a couple of constructs we will
+need, and acts as a stepping stone to fields.  However, there are only
+a couple of examples which will be relevant.
+
+\begin{defn}
+  A set $R$ with two binary operations $+$ and $\cdot$ is a {\em ring}
+  if 
+  \begin{enumerate}
+  \item $R$ is an abelian group for $+$
+  \item $\cdot $ is associative for $R$
+  \item the left and right distributative laws hold for multiplication
+    over addition, i.e., for all $a,b,c\in R$
+    \[a\cdot(b+c) = a\cdot b+a\cdot c \text{ and } (b+c)\cdot a=b\cdot
+    a+c\cdot a.\]
+  \end{enumerate}
+\end{defn}
+\begin{remark}
+  The order of operations in a ring are the same as in arithmetic:
+  multiplication is done first, and then addition.
+\end{remark}
+All of our rings will satisfy the next property.
+\begin{defn}
+  A ring $R$ is a {\em ring with one} if $R$ has an identity for
+  multiplication.
+\end{defn}
+Most of the our rings satisfy the next condition as well.
+\begin{defn}
+  A ring is a {\em commutative ring} if multiplication is
+  commutative.
+\end{defn}
+
+\begin{exam}
+  The sets $\Z$, $\Q$, $\R$, and $\C$ are all commutative rings with
+  one with their usual addition and multiplication.
+\end{exam}
+
+\begin{exam}
+  If $m\in\Z^+$, then $\Z_m$ is a commutative ring with $1$.
+\end{exam}
+
+\begin{remark}
+  If a ring has one, then the identity element is unique by
+  Proposition~\ref{unique-identity}.  We denote the identity for
+  addition by $0_R$, or just $0$ for simplicity, and the identity for
+  multiplication (for a ring with one) by $1_R$, or just $1$.
+\end{remark}
+
+\begin{exam}
+  Let $n\in\Z^+$, then the set of $n\times n$ matrices $M_n(\R)$ is a
+  ring with one (the identity matrix is the identity element for
+  multiplication).  Note, it is {\em not} a commutative ring if $n>1$.
+
+  More generally, if $R$ is a ring, then $M_n(R)$ is also a ring.
+  When adding and multiplying matrices, we just need to know how to
+  add and multiply their entries, and one can check that the
+  properties in the definition holds.  So, for $n\in\Z^+$, $M_n(\Z)$,
+  $M_n(\Q)$,  $M_n(\C)$, and $M_n(\Z_m)$ are all rings.
+\end{exam}
+We prove one proposition about rings.
+\begin{prop}\label{ring-zero}
+  If $R$ is a ring, then for all $a\in R$,
+  \[ 0\cdot a = a\cdot 0 = 0.\]
+\end{prop}
+We note that the proposition gives a property under multiplication for
+the identity for addition.  The only part of the definition of the
+axiom of ring which involves both operations is the distributive law,
+so that plays a key role in the proof.  Of course, we also need to use
+that $0$ is the identity for $+$, which comes via $0+0=0$.
+\begin{proof}
+  Let $a\in R$.  Then
+  \[a\cdot 0 = a\cdot (0+0) = a\cdot 0+a\cdot 0.\]
+  Adding $-(a\cdot 0)$ to both sides then gives
+  \begin{align*}
+-(a\cdot 0)+a\cdot 0=-(a\cdot 0)+a\cdot 0+a\cdot 0 &\implies
+0 = 0+a\cdot 0\\
+&\implies 0=a\cdot 0
+\end{align*}
+The proof that $0=0\cdot a$ is similar and left to the reader.
+\end{proof}
+\begin{prob}
+  Complete the proof of Proposition~\ref{ring-zero} by proving
+  $0=0\cdot a$.
+\end{prob}
+
+\begin{exam}
+  Let $R=\{0\}$ as a subset of $\Z$.  We note that this one element
+  set is a ring with the usual addition and multiplication.  It is
+  called the {\em trivial ring}, and has the peculiar property that
+  $0_R=1_R$.
+\end{exam}
+\begin{prob} \label{triv-ring-crit}
+  Suppose $R$ is a ring with one where $0_R=1_R$.  Prove $R=\{0_R\}$,
+  i.e., that $R$ is a copy of the trivial ring.
+\end{prob}
+
+\subsection{Units}
+We start with a definition.
+\begin{defn}
+Let $R$ be a ring with one.  An element $a\in $ which has an inverse under
+multiplication is called a {\em unit}.  
+\end{defn}
+By Proposition~\ref{unique-inverse}, the multiplicative inverse of a unit
+is unique.  It is not hard to prove that the set of units forms a
+group under multiplication.  In fact, the main thing to prove is that
+the product of two units is a unit.
+\begin{prob}
+  Prove that if $R$ is a ring with one, then $R^\times$ is a group
+  under multiplication.
+\end{prob}
+\begin{exam}
+  Several groups under multiplication we have encountered before are
+  special cases of this construction.  For example $\Qstar$, $\Rstar$,
+  $\Cstar$, and $\Znstar$ are all examples.  
+\end{exam}
+Note, $R^\times$ need not be all non-zero elements, for example, as
+seen in the case of $\Znstar$.
+\begin{exam}
+  In a matrix ring such as $M_n(\R)$, we let $M_n(\R)^\times =
+  \GL_n(\R)$.  This is simply the invertible matrices.  More
+  generally, if $R$ is a ring with one,
+  \[ \GL_n(R)= M_n(R)^\times = \{A\in M_n(R) \mid \exists B\in M_n(R)
+  \text{ s.t. } AB=BA=I_n\}.\]
+  The point is that the inverse has to be in $M_n(R)$ as well.
+\end{exam}
+
+If $R$ is a commutative ring with one, then we can use determinants
+since they only involve ring operations.  Then a consequence of
+results from linear algebra is that
+\[ \GL_n(R) = \{A\in M_n(R)\mid \det(A)\in R^\times\}.\]
+\begin{exam}
+  The two most relevant special cases here are
+  \[ \GL_n(\Z) = \{A\in M_n(\Z)\mid \det(A)=\pm 1\}\]
+  since $\Z^\times = \{1,-1\}$, and
+  \[ \GL_n(\Z_m) = \{A\in M_n(\Z)\mid \det(A)\in \Z_m^\times\}.\]
+  This last group is used in the Hill cipher.
+\end{exam}
+
+
+\subsection{Endomorphisms of groups}
+Let $A$ be an abelian group written additively.
+\begin{defn}
+  An {\em endomorphism} of an abelian group $A$ is a homomorphism
+  $f:A\to A$.  The set of all endomorphisms of $A$ is denoted by $\End(A)$.
+\end{defn}
+If $f,g\in\End(A)$, we can define their sum $(f+g):A\to A$ by function
+addition.  I.e., define $(f+g)(a) = f(a)+g(a)$ for all $a\in A$.
+\begin{prob}
+  Prove that if $A$ is an abelian group and $f,g\in\End(A)$, then
+  $f+g\in \End(A)$.
+\end{prob}
+Similarly, we can define a multiplication on $\End(A)$ by
+composition.  Then the identity map acts as identity for
+multiplication (i.e., compositition) and the trivial map which sends
+every element to $0$ is the identity for addition.
+\begin{prop}
+  If $A$ is an abelian group, then $\End(A)$ is a ring with one.
+\end{prop}
+
+\section{Fields}
+
+\begin{defn}
+  A {\em field} $F$ is a commutative ring with one with $1_F\neq 0_F$,
+  and every non-zero element is a unit.
+\end{defn}
+\begin{remark}
+  As pointed out in problem~\ref{triv-ring-crit}, the condition
+  $1_F\neq 0_F$ rules out the trivial ring from being considered a
+  field.
+\end{remark}
+
+\begin{exam}
+  With their usual operations, $\Q$, $\R$, and $\C$ are all fields,
+  but $\Z$ is not because $2\neq 0$ in $\Z$, but $2$ has no
+  multiplicative inverse in $\Z$.
+\end{exam}
+
+One of our most important examples of fields come from the rings $\Zn$.
+\begin{prop} \label{zn-field}
+  Let $n\in\Z^+$.  Then $\Zn$ is a field if and only if $n$ is prime.
+\end{prop}
+\begin{proof}
+  If $n$ is prime and $a\in \Zn-\{0\}$, then $n\nmid a$.  Since $n$ is
+  prime, $\gcd(a,n)=1$, so by the Bezout property (Thm.~\ref{bezout}),
+  there exists $r,s\in\Z$ such that $ra+sn=1$, which implies $ra\equiv
+  1\pmod n$.  Thus, every non-zero element is a unitin a commutative
+  ring with one (and $n>1$ implies $0\not\equiv 1\pmod n$), and so
+  $\Zn$ is a field.
+
+  Conversely, if $\Zn$ is a field we must have $n>1$ (or else $0\equiv
+  1\pmod n$).  If $n$ is not prime, then it is composite, and has a
+  non-trivial factorization $n=ab$ with $1<a,b<n$.  Since $a\not\equiv
+  0\pmod n$, it would have to have a multiplicative inverse $a'$ such
+  that $aa'\equiv 1\pmod n$.  Multiplying by $b$ we get
+  \begin{align*}
+    b &\equiv b(aa') \pmod n \\
+    &\equiv (ba)a' \pmod n \\
+    &\equiv 0\cdot a' \pmod n \\
+    &\equiv 0 \pmod n
+  \end{align*}
+  But then $1\equiv ab \equiv a\cdot 0 \equiv 0\pmod n$, a
+  contradiction.  Thus, if $n$ is not prime, then $\Zn$ is not a field.
+\end{proof}
+We prove one small proposition for fields which forms the backbone of
+many results involving roots of polynomials over a field.
+\begin{prop}
+  If $F$ is a field, $a,b\in F$ and $ab=0$, then $a=0$ or $b=0$.
+\end{prop}
+\begin{proof}
+  Suppose $ab=0$ and $a\neq 0$.  Then $a$ has a multiplicative
+  inverse; multiply by it to get
+\begin{align*}
+  a^{-1}(ab) = a^{-1}0 &\implies (a^{-1}a)b = 0 &\text{(by
+    Prop.~\ref{ring-zero})} \\
+  &\implies 1\cdot b = 0 \\
+  &\implies b=0.
+\end{align*}
+\end{proof}
+\begin{remark}
+  The conclusion fails in some of the rings we have seen.  For
+  example, in $\Z_6$, $2\cdot 3 \equiv 0\pmod 6$, but $2\not\equiv
+  0\pmod 6$ and $3\not\equiv 0\pmod 6$.  Similarly, in $M_2(\R)$,\
+  \[ \begin{pmatrix} 0 & 1\\0 &0\end{pmatrix}\begin{pmatrix} 0 & 1\\0
+    & 0\end{pmatrix} = \begin{pmatrix} 0 & 0\\0 &0\end{pmatrix}\]
+  but neither matrix on the left-hand side is the zero-matrix.
+\end{remark}
+
+
+
+\subsection{Characteristic}
+The notion of characteristic can be applied to any ring, but will work
+in the context of rings with one.
+\begin{defn}
+  Let $R$ be a ring with one.  If $1_R$ has infinite order in the
+  additive group, we say $R$ has {\em characteristic zero}.  Otherwise, the
+  {\em characteristic of $R$} is the order of $1_R$ under addition.  We
+  denote the characteristic of $R$ by $\chr(R)$.
+\end{defn}
+Recall that in a additive group, we defined $n\cdot a$ where
+$n\in\Z^+$ to be $a\pots a$ ($n$ times).
+\begin{prob}
+  Suppose $R$ is a ring with one of characteristic $n>0$.  Prove that
+  for all $a\in R$,
+  $n\cdot a=0_R$, and that $n$ is the smallest positive integer with
+  this property.
+\end{prob}
+\begin{exam}
+  Some of the most familiar rings have characteristic $0$:
+\[ 0= \chr(\Z)=\chr(\Q)=\chr(\R)=\chr(\C). \]
+\end{exam}
+\begin{exam}\label{zn-char}
+  If $n\in\Z^+$, then $\chr(\Zn)=n$.
+\end{exam}
+Suppose $R$ and $S$ are rings with one, $R$ a subring of $S$ with
+$1_R=1_S$.  Since the characteristic only depends the multiplicative
+identity, we immediately get
+\begin{prop}
+Suppose $R$ and $S$ are rings with one, $R$ a subring of $S$ with
+$1_R=1_S$, then $\chr(R)=\chr(S)$.
+\end{prop}
+We will be mainly interested in fields, and the characteristic of a
+field is restricted.
+\begin{prop} \label{field-char}
+  If $F$ is a field, then either $\chr(F)=0$ or $\chr(F)=p$ for some
+  prime $p$.
+\end{prop}
+\begin{proof}
+  Suppose $F$ has finite characteristic $n$.  If $n=1$, then $1\cdot
+  1_F=0_F$, which implies $1_F=0_F$ \con.  Thus, $n>1$.
+
+  If $n$ is not prime, then it is composite and $n=ab$ with
+  $1<a,b<n$.  From the distributive law
+%  \[ \begin{array}{rcl@{}l}
+%    1\pots 1 & = & (1\pots 1)&(1\pots 1) \\
+\[ 0=\underbrace{1\pots 1}_\text{$n$ times}  =  (\underbrace{1\pots
+  1}_\text{$a$ times}) (\underbrace{1\pots 1}_\text{$b$ times})\]
+But in a field, then implies $a\cdot 1=0$ or $b\cdot 1=0$.  Either
+way, we get a contradiction to the fact that $n$ is the additive order
+of $1$ \con.
+\end{proof}
+\begin{remark}
+  Proposition~\ref{field-char} is consistent with the
+  example above and Proposition~\ref{zn-field} since the
+  latter two tell us $\chr(\Zn)=n$, and $\Zn$ is a field iff $n$ is
+  prime, so $\Zn$ is a field iff $\chr(\Zn)$ is prime.
+\end{remark}
+
+\section{Chinese remainder theorem}
+The Chinese remainder theorem is probably familiar from elementary
+number theory or cryptography.  Here we phrase it in a way to
+highlight it connections to abstract algebra.
+\begin{thm}[Chinese remainder theorem] \label{crt}
+  Let $m,n\in\Z^+$ such that $\gcd(m,n)=1$.  Then the map
+  \begin{align*}
+    \phi:\Z_{mn}&\to \Z_m\times\Z_n \\
+    [a]_{mn} &\mapsto ([a]_m, [a]_n)
+  \end{align*}
+  is a ring isomorphism.
+\end{thm}
+Recall that being an isomorphism means that we can go back and forth
+between the two sides.  Since it is an isomorphism of rings, the map
+respects addition and multiplication.  A consequence of the latter is
+the multiplicative property of the Euler phi-function.
+\begin{cor}
+  If $m,n\in\Z^+$ with $\gcd(m,n)=1$, then
+  \[ \varphi(mn) = \varphi(m)\varphi(n).\]
+\end{cor}
+\begin{proof}[Outline of proof of corollary:]
+Filling in the steps is left to the reader.  Recall that if $R$ is a
+ring with one, then $R^\times$ denotes its set of units.
+\begin{enumerate}
+  \item If $\phi:R\to S$ is a ring isomorphism between rings with one,
+    then it gives a bijection between $R^\times$ and $S^\times$.
+  \item If $R$ and $S$ are commutative rings with $1$, then $(R\times
+    S)^\times =R^\times\times S^\times$.
+  \item Deduce $|\Z_{mn}^\times| = |\Z_m^\times|\cdot |\Z_n^\times|$.
+  \item Use that $|\Z_n^\times| = \varphi(n)$.
+\end{enumerate}
+\end{proof}
+
+\begin{proof}[Proof of CRT]
+  We sketch the proof.
+  \begin{enumerate}
+  \item Show that the map $\phi$ is well-defined by proving that if $a,b\in\Z$,
+    $a\equiv b\pmod{mn}$, then $a\equiv b\pmod m$ and $a\equiv b\pmod
+    n$.
+  \item Show that $\phi$ respects addition (this is mainly invoking a 
+    the definition of addition in $\Zn$).
+  \item Show that $\phi$ respects multiplication (this is mainly invoking a 
+    definition of multiplication in $\Zn$).
+  \item Show that the map is one-to-one by showing $\ker(\phi) =
+    \{[0]_{mn}\}$.
+  \item Deduce that $\phi$ is surjective by counting (and using that
+    it is injective).
+  \end{enumerate}
+\end{proof}
+\begin{prob}
+  \begin{enumerate}
+  \item[(a)]  Fill in the details of the proof of Theorem~\ref{crt}.  
+  \item[(b)] Which  step(s) use the hypothesis that $\gcd(m,n)=1$?
+  \end{enumerate}
+\end{prob}
+The traditional version of the Chinese Remainder Theorem states that
+if $a,b\in\Z$, $m,n\in\Z^+$ with $\gcd(m,n)=1$, then the system of
+congruences 
+\begin{align*}
+x&\equiv a \pmod m \\
+x &\equiv b\pmod n
+\end{align*} 
+has a unique solution modulo $mn$.  The existence of this solution is
+equivalent to the statement that the map $\phi$ in Theorem~\ref{crt}
+is surjective, and the uniqueness is then equivalent to the statement
+that the solution is unique.  However, the the traditional version
+does not draw out the algebraic nature of the correspondence -- that
+$\phi$ is a ring homomorphism -- which is to many applications.
+
+
+
+
+
+
+\section{Curves}
+We work in the realm of algebraic geometry.  This means that some of
+our basic objects come as the set of solutions to systems of
+polynomial equations.
+
+In linear algebra, one studies these objects in the case when all of
+the equations are linear.  If we have $n$ linear equations in $m$
+unknowns with $n\leq m$, then in general we get a solution set with
+$m-n$ free parameters.  It is an $m-n$ dimensional set (a translate of
+an $m-n$ dimensional vector space).  However, that is not the only
+possible outcome: one might end up with more free parameters, or no
+solutions at all.
+
+We will work with non-linear equations, but make an important
+simplifying assumption: we virtually always work with one equation in
+two unknowns.  In the linear case, this resolves the ambiguity and the
+solution set is a line.  In the non-linear case, we generally end up
+with something one-dimensional.  There are two degenerate
+situations we largely avoid because they are
+distractions from our main interest.
+\begin{exam}
+  The solution set for $x^2+y^2=-1$ over $\R$ is empty.
+\end{exam}
+\begin{exam}
+  The solution set for $x^2=y^2$ over $\R$ is the union of two lines.
+  If we move everything to one side of the equation, it factors:
+  $(x+y)(x-y)=0$.  In a case like this, we say the solution set is
+  reducible.  If the corresponding polynomial does not factor, we say
+  that the solution set is irreducible.
+\end{exam}
+Again, we are not interested in these degenerate cases.  In practice, the
+solution set to the equations we work with will be one dimensional and
+irreducible.  The result is then called a {\em curve}.
+
+
+
+\section{Projective space}
+
+\subsection{Geometry}
+When studying functions in calculus and high school algebra, we
+consider their graphs in the plane.  Here the two axes play different
+roles, and sometimes particular points in the plane are special.  For
+example, one might consider the graph of a polynomial, and places
+where it hits the $x$-axis are special because they correspond to
+roots.
+
+In these courses, analytic geometry refers to using a coordinatized
+plane to study geometric ideas.  A geometric figure is just a subset
+of the plane, and an essential notion of when two geometric figures
+are the same is if they are congruent.  In particular, sets are
+congruent to their images under rotation, reflection, or translation
+(shift); there is no special direction, and the origin is just another
+point.
+
+We will take the geometric point of view of the plane.  As in
+calculus, we may consider higher dimensional space as well.  We will
+work over a field $K$, and define {\em affine $n$-space} to be $K^n$
+as a generalization of $\R^n$.
+
+\subsection{Slopes in the plane}
+Consider lines in $\R^2$.  An essential invariant is slope.
+From the geometric point of view, vertical lines are as good as any
+other line, so the set of possible slopes is almost given by $\R$, but
+we need one more ``slope'' to account for vertical lines.  Nothing
+changes algebraically if we generalize to $K^2$ where $K$ is a field,
+so we do just that.
+
+We can approach this another way.  Every slope is represented by a
+single line through the origin, the set of lines through the
+origin could be used as the set of slopes.  Each such line is
+completely determined by a point it goes through $(a,b)\neq (0,0)$.
+We define a relation on these points based on when they determine the
+same line:
+\begin{equation} \label{line-eq-rel}
+ (a,b)\sim (c,d) \iff (a,b)=\lambda (c,d)\quad\text{for some
+  $\lambda\in K$.}
+\end{equation}
+Here $\lambda(c,d)= (\lambda c, \lambda d)$ as in scalar
+multiplication from linear algebra.
+\begin{prob}
+  Prove $\sim$ in equation~\eqref{line-eq-rel} defines an equivalence
+  relation.
+\end{prob}
+Since this is an equivalence relation, we want to consider the
+equivalence classes and write $[a:b]$ for the
+equivalence class of $(a,b)$.  We define $\pr^1(K)$ to be the set of
+equivalence classes.  Then the lines through the origin are
+in one-to-one correspondence with these equivalence classes.
+
+Naturally, we can connect this point of view with the original one,
+that the set of slopes should be $K$ plus one more element for
+vertical lines.
+\begin{prop}\label{p1}
+  If $K$ is a field, the elements of $\pr^1(K)$ are in one-to-one
+  correspondence with
+  \[ \{[1:m]\mid m\in K\}\cup \{[0:1]\}.\]
+\end{prop}
+The proof is straightforward if one breaks it into cases for $[a:b]$
+based on whether or not $a=0$.
+\begin{prob}
+  Prove Proposition~\ref{p1}.
+\end{prob}
+
+\subsection{$\pr^n(K)$}
+We now generalize the construction from the previous section.  
+Points in $\pr^n(K)$ to correspond to lines through the origin in
+$K^{n+1}$.  Let
+\[ S= K^{n+1}-\{(0\cots 0)\}.\]
+As above, we define a relation 
+\[ \vec u\sim \vec v \iff \vec u=\lambda\vec v \text{ for some $\lambda\in 
+K^\times$}\]
+where if $\vec u=(x_0\cots x_n)$, then $\lambda\vec u = (\lambda x_0\cots
+\lambda x_n)$.
+We then let $\pr^n(K)=S/\sim$.
+
+As above, we let $[x_0\cots x_n]$ denote the equivalence class of
+$(x_0\cots x_n)$.
+
+\subsection{Affine points and points at infinity}
+We can partition the points of $\pr^n(K)$ into two sets in a
+natural way.  Fix $i\in\{0\cots n\}$.  The two sets are
+\[ \{[x_0\cots x_n] \mid x_i\neq 0\} \text{ and } 
+\{[x_0\cots x_n] \mid x_i = 0\}. \]
+Although the coordinates of $[x_0\cots x_n]$ are only well-defined
+up to a non-zero scalar, the condition $x_i=0$ makes sense.
+
+If $[x_0\cots x_n]$ is in the first set, we can normalize the
+scaling by multiplying through by $\frac1{x_i}$.  This makes the
+$i$th coordinate $1$, and there is only one way to represent such
+a point with $x_i=1$.  There are $n$ coordinates $x_j$ with $j\neq i$,
+so there is a natural bijection between the first set and $K^n$, i.e.,
+a copy of affine $n$-space.
+
+Points in the second set have $x_i=0$.  There are $n$ remaining coordinates,
+and they
+\begin{enumerate}
+\item cannot all be zero
+\item give the same point in projective space if they differ by
+multiplication by a non-zero element of $K$
+\end{enumerate}
+But, these two conditions describe projective $n-1$ dimensional space.
+In other words, dropping $x_i$ (which equals $0$) from the list gives
+a natural bijection between the second set and $\pr^{n-1}(K)$.
+
+So, we can break $\pr^n(K)$ into a disjoint union:
+\[ \pr^n(K) = K^n \cup \pr^{n-1}(K). \]
+The $K^n$ are called the affine points, and the $\pr^{n-1}(K)$ are
+the points at infinity.  Note, we initially picked $i\in\{0\cots n\}$,
+so there are $n+1$ choices for $i$, and each gives a different decomposition.
+A given point $[x_0\cots x_n]$ ends up being an affine point in the 
+decomposition for $i$ if $x_i\neq 0$, and is a point at infinity where
+$x_i=0$.
+
+On one hand, a point like $[1,2,3]\in\pr^2(\R)$ is an affine point in all
+three of the decompositions, the point $[1,0,2]$ is an affine point in two
+decompositions and gives a point at infinity for the third (when $i=1$).
+Importantly, every point $[x_0\cots x_n]\in\pr^n(K)$ has some $x_i\neq 0$
+(from the original construction), so every point is an affine point for
+at least one of the decompositions.
+
+\subsection{Homogenization and dehomogenization}
+Here we look at the process of switching between affine and projective
+coordinates.  An elliptic curve lives in projective space, so we need
+to use projective coordinates sometimes. However, any individual point
+lives in at least one affine subset of projective space, so we can
+switch to affine coordinates when dealing with that point.
+
+We illustrate the process with $\pr^2(\R)$.  For projective
+coordinates, we will use capital letters: $[X,Y,Z]$.  There are three
+affine spaces covering $\pr^2(\R)$, but our favorite will be the set
+where $Z\neq 0$.  On this set, the transition between affine and
+projective coordinates is
+\[ (x,y) \leftrightarrow \left[\frac X Z, \frac Y Z, 1\right].\]
+In other words, $x=X/Z$ and $y=Y/Z$.
+
+\subsubsection{Homogenization}
+
+Suppose we start with the affine equation 
+\begin{equation}\label{ex1}
+x^2+3y^2 = 1,
+\end{equation}
+and want to convert it to projective coordinates.  We simply make the
+substitutions above, and clear denominators.  This is what it looks
+like.
+\begin{equation} \label{eq1hom}
+ \left(\frac X Z\right)^2 + 3\left( \frac Y Z\right)^2 = 1 \iff
+X^2+3Y^2=Z^2.
+\end{equation}
+The end result is a {\em homogeneous equation} in that every term has
+total degree $2$ (the {\em total degree} of a monomial is the sum of
+the powers of all of its variables).  Because of this the process of
+going from affine to projective coordinates is called homogenization.
+
+Note that if $f(X,Y,Z)=0$ is homogeneous of degree $d$, then every
+monomial has total degree $d$, so $f(\lambda X, \lambda Y, \lambda Z)=
+\lambda^d f(X,Y,Z)$.  So, if one representative of $[a,b,c]$ is a
+solution to $f(X,Y,Z)=0$, then so is every representative $(\lambda a,
+\lambda b, \lambda c)$.  So it is fitting to use homogeneous equations
+when using projective coordinates.
+
+\begin{exam}
+  Here we find the projective equation for $x^3+xy+2x -3=y^2$:
+  \[ \left(\frac X Z\right)^3 + \left(\frac X Z\right) \left(\frac Y
+    Z\right) +2 \left(\frac X Z\right) - 3 = \left(\frac Y Z\right)^2
+\]
+ which, after clearing denominators gives
+\[X^3+XYZ + 2XZ^2 -3Z^3 = Y^2Z\]
+\end{exam}
+
+There is a slightly faster way to homogenize.  Suppose an equation has
+total degree $d$ (i.e., the maximum of the degrees of monomials is
+$d$).  For a term with degree $k$, the substitution introduces $Z^k$
+to its denominator.  To clear all denominators, we multiply by $Z^d$,
+so the degree $k$ term is multiplied by $Z^{d-K}$.  So, the term is
+multiplied by the power of $Z$ to bring it to the maximum degree.
+
+The process is essentially the same with more variables, except that
+we may go back to $X_0\cots X_n$.
+\begin{exam}
+  To find the projective equation for
+  $x_1^7-3x_2x_3^2=4x_1^3x_4^5-11$, we use the faster method:
+  capitalize all of the variables and mulitply each term by a power of
+  $X_0$ so that its degree matches the largest degree, which is $8$
+  (from the $4x_1^3x_4^5$ term):
+  \[ X_0X_1^7-3X_0^5X_2X_3^2=4X_1^3X_4^5-11X_0^8.\]
+\end{exam}
+\subsubsection{Dehomogenization}
+Dehomogenization is simple.  If we want to dehomogenize with respect
+to the variable $x_i$, we use the correspondence
+\[ (x_0\cots x_{i-1}, x_{i+1}\cots x_n) \leftrightarrow [X_0\cots
+X_{i-1},1,X_{i+1}\cots X_n].\]
+So, we replace $X_i$ with $1$, and convert the other variables
+accordingly.
+\begin{exam}
+  To dehomogenize $ X_0X_1^7-3X_0^5X_2X_3^2=4X_1^3X_4^5-11X_0^8$ with
+  respect to $X_2$, we apply the process to get
+  \[ x_0x_1^7-3x_0^5x_3^2=4x_1^3x_4^5-11x_0^8.\]
+\end{exam}
+
+There is a danger when homogenizing and dehomogenizing equations.  In
+the examples above, we started with $x_1^7-3x_2x_3^2=4x_1^3x_4^5-11$,
+homogenized and dehomogenized to get
+$x_0x_1^7-3x_0^5x_3^2=4x_1^3x_4^5-11x_0^8$.  However, variables in
+these two equations represent different things.  In the first
+equation, $x_1=X_1/X_0$ and in the second equation $x_1=X_1/X_2$.  The
+projective coordinates are consistent, but not the two sets of affine
+coordinates.  For this reason, we will usually use different variable
+names for different dehomogenizations.
+
+Usually, we work in $\pr^2$ with coordinates $[X,Y,Z]$.  The affine
+coordinates with $Z=1$ will be $(x,y)$, which means we need to pick
+other letters for the other dehomogenizations.
+\begin{exam}
+  Dehomogenize $X^3+XYZ + 2XZ^2 -3Z^3 = Y^2Z$ with respect to $Y$.
+  Here we will use $u=X/Y$ and $v=Z/Y$.  The process is to set $Y=1$,
+  replace $X$ with $u$ , and replace $Z$ with $v$, which gives
+  $u^3+uv+2uv^2-3v^3 = v$.
+\end{exam}
+
+\subsubsection{Points at infinity}
+
+Here, we will work in $\pr^2$.  As a first example, consider
+the line $y=mx+b$.  It has homogenization is $Y=mX+bZ$.
+
+Points at infinity are points which satisfy the homogenized equation
+in projective space which do not come from solutions to the
+original equation, i.e., they have $Z=0$.  So, we set $Z=0$ which
+gives $Y=mX$.  Note, if one point is a solution to
+this equation, then all of its scalar multiples are solutions, but
+these multiples are all representatives of the same projective point.
+So, we are only interested in solutions up to scalar multiplication.
+In this case, we get one point: $[1,m,0]$.
+
+Note, any two lines with slope $m$ hit the same point at infinity.  If
+we consider vertical lines, they a similar computation shows that they
+have one point at infinity, namely $[0,1,0]$.
+\begin{prob}
+  Show that the line $x=c$ has one point at infinity, namely
+  $[0,1,0]$.
+\end{prob}
+
+This points out part of the appeal of working in projective space.
+\begin{itemize}
+\item  In the affine plane, two distinct lines intersect in $0$ or $1$
+  point.
+\item  In the projective plane, two distinct lines always intersect in $1$
+  point.
+\end{itemize}
+Moreover, there we see that the points at infinity are in $1-1$
+correspondence with slopes of lines (including the infinite slope).
+
+Next we consider $x^2-y^2=1$, a hyperbola with asymptotes $y=\pm x$.
+Intuitively, we expect the points at infinity to match those of its
+asymptotes, and that is exactly what happens.  
+
+The homogenization of the equation is $X^2-Y^2=Z^2$.
+Setting $Z=0$ gives 
+\[ X^2-Y^2=0 \iff Y=\pm X. \]
+Up to scalar multiplication, this gives get two projective points:
+$[1,1,0]$, and $[1,-1,0]$.  These match the points at infinity for the
+two asymptotes.
+
+As a final example, consider the equation
+$x^2+3y^2=1$.  We saw earlier that its homogenization is
+$X^2+3Y^2=Z^2$.  Setting $Z=0$ and solving gives
+\[  X^2+3Y^2=0 \iff X^2=-3Y^2. \]
+
+To deal with the fact that this is a homogeneous equation with
+projective solutions, we can dehomogenize.  We just need to be careful
+to not miss any solutions in the process.
+
+We already have $Z=0$ so we do not get a projective point from the
+obvious solution $X=Y=0$.  Note that if $Y=0$, then $X=0$ \con, so
+$Y\neq 0$.  We can then dehomogenize with respect to $Y$ to get the
+equation $u^2=-3$ (with $u=X/Y$).
+
+Over $\R$, we get no solutions, so there are no points at infinity in
+$\pr^2(\R)$.  However, over $\C$ there are solutions, $u=\pm i\sqrt
+3$.  Going back to projective coordinates, this gives two points
+$[\sqrt{3}i,1,0]$ and $[-\sqrt{3}i,1,0]$. 
+
+\subsubsection{Quadratic curves}
+
+By a quadratic curve, we mean (in affine coordinates) the solutions to
+a quadratic equation in two variables.  In analytic geometry, one
+learns how to make coordinate changes to shift a central point to the
+origin, and then to rotate the graph until it takes one of three
+forms: parabola, hyperbola, or ellipse\footnote{We are ignoring the
+  degenerate cases here, like $x^2=y^2$.}.  If we allow scaling of
+variables, then every quadratic equation can be transformed into one
+of three specific equations.
+
+We considered the projective equation $X^2+Y^2=Z^2$.
+\begin{itemize}
+\item If we dehomogenize with respect to $Z$, we get $x^2+y^2=1$, an ellipse
+\item If we dehomogenize with respect to $Y$, we get $u^2+1=v^2\iff u^2-v^2=1$, a hyperbola
+\end{itemize}
+The affine curves are parts of a single curve which may be missing
+points.  Here, the ellipse and the hyperbola are just two views of the
+same curve.  For points over $\R$, the ellipse has no points at
+infinity, but the hyperbola has two points at infinity.  We think of
+those points as connecting the branches of the hyperbola.
+
+The next problem shows that a curve can have one affine part be a
+parabola, and another be a hyperbola.
+\begin{prob}
+  Start with $y=x^2$.
+  \begin{enumerate}
+  \item Find its homogeneous equation.
+  \item Show that it has one point at infinity (over any field).
+  \item Dehomogenize with respect to $X$.
+  \end{enumerate}
+\end{prob}
+
+From the examples above, we have seen that a parabola and a hyperbola
+can both be affine parts of the same curve.  Similarly, an ellipse and
+a hyperbola can be affine parts of the same curve.  There are three
+affine parts to every projective curve, and in fact, one can find
+equations of curves where these three affine parts hit all three
+types!  In projective space, the situation is very simple: there is
+only one type of (smooth) quadratic equation.  From the projective
+curves point of view, when you look at any affine piece, you see most
+of the curve, but not all of it.
+
+The situation is analgous to holding a spherical object and trying to
+see it.  No matter how you hold it, you do not see all of the surface
+of the sphere.  You can, however, turn the sphere and get different
+views.  Every point is visible from some view, but no one view lets
+you see all of the points at once.
+
+Similarly with a curve in projective space (of any degree), the affine
+parts let us see parts (most) of the curve, and every point is in part
+of some affine piece, but no affine part contains all of the points
+(technically, we should add the condition ``over an algebraically
+closed field'').
+
+\section{More about group homomorphisms}
+%\subsection{Counting inverse images}
+\label{coset-home}
+
+For general functions between sets, the inverse image of an element
+can have various sizes.  For group homomorphisms, it is much more
+restrictive.  Suppose $f:H\to K$ is a group homomorphism.  If $k\in K$
+but $k\not\in\Im(f)$, then clearly $f^{-1}(k)=\emptyset$.  If $k\in
+\Im(f)$, then $k=f(a)$ for some $a\in H$.  We focus on these elements.
+
+\begin{prop}
+  Suppose $f:G_1\to G_2$ is a homomorphism of groups.  Then for all $k\in
+  \Im(f)$, the sets $f^{-1}(k)$ have the same number of elements as
+  $\ker(f)$.
+\end{prop}
+We will prove this in two steps: we show that the inverse image of a
+point (from the image) is always a left coset, and then we show that
+all left cosets (of a given subgroup) have the same number of
+elements.  First, we should define left coset.
+\begin{defn}
+  If $G$ is a group, $H$ is a subgroup of $G$, and $a\in G$, then the
+  {\em left coset of $a$}, denoted $aH$ is the set
+  \[ aH=\{ah\mid h\in H\}.\]
+\end{defn}
+Recall that if $f:G_1\to G_2$ is a homomorphism, then $\ker(f)$, the
+kernel of $f$, is a subgroup of $G_1$.  Moreover, $\ker(f) = f^{-1}(e)$,
+so it is the inverse image of a particular point.
+\begin{lemma}
+  Suppose $f:G_1\to G_2$ is a homomorphism of groups and $a\in G_1$.  Then
+  \[ a\ker(f) = f^{-1}(f(a)).\]
+\end{lemma}
+\begin{proof}
+  Suppose $x\in a\ker(f)$.  Then $x=ah$ for some $h\in\ker(f)$.  Note
+  $f(h) =e$.  So, 
+\[ f(x) = f(ah) = f(a)f(h) 
+     \implies f(x) = f(a)\cdot e 
+     \implies f(x)= f(a). \]
+This implies $x\in f^{-1}(f(a))$.  
+
+Now suppose $x\in f^{-1}f(a))$.  Then $f(x)=f(a)$, which implies
+\[ e=f(x)f(a)^{-1} = f(x) f(a^{-1}) = f(xa^{-1}).\]
+Thus, 
+$$xa^{-1}\in \ker(f) \implies xa^{-1} = h \text{ for some $h\in\ker(f)$}.$$
+Therefore, $x=ah\in a\ker(f)$.
+\end{proof}
+\begin{lemma}
+  If $H$ is a subgroup of a group $G$, then for all $g\in G$, $|gH| =
+  |H|$.
+\end{lemma}
+  We show that these sets have the same number of elements by 
+  constructing a bijection between them.\footnote{This works in the situation
+  we are interested in, namely when $H$ is finite, but applies to
+  cardinalities of infinite sets.}
+\begin{proof}
+  Let $g\in G$.  Define
+\begin{align*}
+  f:H&\to gH \\
+  h&\mapsto gh
+\end{align*}
+It is clear from the definition of $gH$ that this function is surjective.
+To see that it is injective, note that for all $a,b\in H$,
+\[  f(a) = f(b) \implies ga = gb \implies a=b\]
+by left-cancellation (or multiplication on the left by $g^{-1}$.  Thus
+$f$ is also injective, hence bijective, and we get $|H|=|gH|$.
+\end{proof}
+
+
+\section{More about fields}
+\subsection{Extension fields}
+
+We stipulate the following as a fact from abstract algebra.
+\begin{prop}
+  If $K$ is a field, then there is a field $\Kbar$ called the {\em
+    algebraic closure of $K$} with the following two properties:
+  \begin{enumerate}
+  \item every $\alpha\in \Kbar$ is the root of a non-constant polynomial with
+    coefficients in $K$
+  \item every non-constant polynomial with coefficients in $K$ factors
+    as a product of degree $1$ polynomials over $\Kbar$.
+  \end{enumerate}
+\end{prop}
+The theorem covers not only the existence of this large field
+containing all roots of all polynomials from $K$, but also that every
+element of this field is the root of a polynomial.  In particular, if
+$\alpha$ and $\beta$ are both roots of polynomials in $K[x]$, then so
+is $\alpha+\beta$ and $\alpha\beta$.
+
+
+\begin{exam}
+  If $K=\R$, then $\Kbar=\C$.
+\end{exam}
+
+When considering roots of polynomials, we can multiply by a non-zero
+constant.  So, we normally deal with {\em monic} polynomials, i.e.,
+ones whose highest degree coefficient is $1$.
+
+Similarly, when considering the factorization of monic polynomials, we
+can adjust constant factors to make each factor monic as well.
+\begin{exam}
+  The polynomial $x^2-4$ factors over $\Q$ as $(2x-4)(\frac12 x+1)$,
+  but we can multiply the first factor by $\frac12$ and the second by
+  $2$ to obtain $x^2-4=(x-2)(x+2)$.
+\end{exam}
+\begin{prop}
+  Let $K$ be a field and $\alpha\in\Kbar$.  Let $f(x)$ be a
+  monic polynomial with coefficients in $K$ of minimal degree
+  such that $f(\alpha)=0$.  Then
+  \begin{enumerate}
+  \item $f(x)$ is irreducible over $K$
+  \item if $\deg(f) = n$, then the elements $a_{n-1}\alpha^{n-1}\pots
+    a_0$ with $a_i\in K$ are distinct.
+  \end{enumerate}
+\end{prop}
+\begin{proof}
+  For the first part, suppose not.  Then we have a non-trivial
+  factorization $f(x)=g(x)h(x)$, and can assume $g(x)$ and $h(x)$ are
+  both monic with coefficients in $K$.  Since the factorization is
+  non-trivial, both $g(x)$ and $h(x)$ have degree smaller than the
+  degree of $f(x)$.  Evaluating at $\alpha$ we get
+  \begin{equation} \label{eq-prod-0}
+    0 = f(\alpha) = g(\alpha)h(\alpha)
+  \end{equation}
+  and so $g(\alpha)=0$ or $h(\alpha)=0$ (since
+  equation~\eqref{eq-prod-0} takes place in the field $\Kbar$).  This
+  contradicts the minimality of the degree of $f(x)$ \con.
+
+  For the second part, suppose
+  \[ a_{n-1}\alpha^{n-1}\pots a_0 = a_{n-1}'\alpha^{n-1}\pots a_0'\]
+  for some $a_i, a_i'\in K$.  Subtracting, we get
+  \[(a_{n-1}-a_{n-1}')\alpha^{n-1}\pots (a_0-a_0')=0.\]
+  By the minimality of the degree of $f(x)$, $\alpha$ cannot be the
+  root of a polynomial of degree less than $n$ over $K$, so
+  $(a_{n-1}-a_{n-1}')x^{n-1}\pots (a_0-a_0')$ must be the
+  $0$-polynomial, i.e., all of its coefficients are zero.  Thus,
+  $a_i=a_i'$ for all $i$.
+\end{proof}
+It is not hard to show that the polynomial $f(x)$ in the previous
+proposition is unique for $\alpha$ (lowest degree monic polynomial
+over $K$ with $\alpha$ as a root), and is called the {\em monic
+  irreducible polynomial of $\alpha$}.
+
+Another result from algebra:
+\begin{prop} \label{ext-field}
+  If $K$ is a field, $\gamma\in \Kbar$, and $n$ the degree of the monic
+  irreducible polynomial for $\gamma$.  Then
+  \[ K[\gamma]= \{a_{n-1}\gamma^{n-1}\pots a_0 \mid a_i\in K\}\]
+  is a subring of $\Kbar$ which is a field.
+\end{prop}
+\begin{proof}
+  Let $\alpha=\sum_{i=0}^{n-1} a_i \gamma^i, \beta=\sum_{i=0}^{n-1} b_i \gamma^i\in
+  K[\gamma]$.  Then
+  \[ \alpha+\beta=\sum_{i=0}^{n-1} a_i \gamma^i+\sum_{i=0}^{n-1} b_i
+  \gamma^i =\sum_{i=0}^{n-1} (a_i+b_i) \gamma^i \in K[\gamma].\]
+Similarly,
+\[ -\left(\sum_{i=0}^{n-1} a_i \gamma^i\right)=\sum_{i=0}^{n-1} (-a_i)
+\gamma^i\in K[\gamma],\]
+and clearly $0=\sum_{i=0}^{n-1} 0\cdot \gamma^i\in K[\gamma]$.  To see
+that $K[\gamma]$ is a subring of $\Kbar$, all that is left is to show
+that it is closed under multiplication.
+
+From the distributative law,
+\begin{equation} \label{alphabeta}
+ \alpha\cdot\beta = \sum_{i=0}^{2n-2} c_i \gamma^i
+\end{equation}
+for some $c_i\in K$.  We can reduce this to an element of the right
+form as follows.  Note $f(x)=x^n+d_{n-1}x^{n-1}\pots d_0$ for some
+$d_i\in K$, so $f(\gamma)=0$ implies
+\[ \gamma^n = -d_0-d_1\gamma-\cdots -d_{n-1}\gamma^{n-1},\]
+and multiplying by $\gamma^k$:
+\begin{equation}\label{gammapow}
+ \gamma^{n+k} = -d_0\gamma^k-d_1\gamma^{k+1}-\cdots
+-d_{n-1}\gamma^{n+k-1}.
+\end{equation}
+In a sum such as the right-hand side of equation~\eqref{alphabeta}, we
+can reduce the ``degree in $\gamma$'' by repeatedly making a
+substitution from equation~\eqref{gammapow} until the degree is less
+than $n$.
+
+To complete the proof, we would need to show that every non-zero
+element of $K[\gamma]$ has a multiplicative inverse of the same form.
+We leave the proof to a course in abstract algebra.\footnote{One could
+  either prove and use an analogue of the Bezout property for
+  polynomials, or linear algebra.}
+\end{proof}
+Now suppose $K$ is a field, $\alpha\in\Kbar$, and $f(x)$ is the monic
+irreducible polynomial for $\alpha$ over $K$.  By
+Prop.~\ref{ext-field}, we get a field $K[\alpha]$.  It is pretty easy
+to see that elements of that form are closed under addition and
+additive inverse.  When multiplying two elements of that form, we
+typically get powers of $\alpha$ as high as $\alpha^{2n-2}$.
+
+\subsection{Fields and polynomials}
+
+\subsection{Finite fields}
+
+If a {\em finite field} is simply a field $K$ which is a finite set.
+The most familiar examples are $\Z_p$ with $p$ prime.  In general,
+one can prove
+\begin{itemize}
+\item if $K$ is a finite field, then it has characteristic $p$
+ for some prime $p$
+\item if $K$ is a finite field of characteristic $p$, then it
+has order $p^n$ for some $n\in\Z^+$
+\item for every prime $p$ and positive integer $n$, there exists
+a finite field of order $p^n$, and it is unique up to isomorphism.
+\end{itemize}
+Given this, we will write $\F_{p^n}$ for the field of order $p^n$.
+Since $\Z_p$ is a field of order $p$, we have $\Z_p=\F_p$.  We will
+use the $\F_p$ notation when we want to emphasize that we are talking
+about $\Z_p$ as a field, and $\Z_p$ if we want to emphasize that we
+are dealing with integers modulo $p$, or that we have a cyclic group
+of order $p$.
+
+
+\section{Group algorithms}
+
+Here we present three algorithms which apply to any group.  Particular
+instances of these may be familiar from other classes.
+
+\subsection{Square and multiply}
+The name for this algorithm applies when the group is written
+multiplicatively.  Of course, it is useful in additive groups, like
+the group of an elliptic curve.
+
+Given a group $G$, an element $g\in G$, and $n\in\Z^+$, the goal is to
+compute $g^n$ efficiently.  If we use the ``naive algorithm'' of
+repeated multiplication, this takes $n-1$ steps.
+
+There are two ideas involved.  For the first, suppose $n$ is a power
+of $2$, such as $n=16=2^4$.  Then, we can compute $g^{16}$ with just
+$4$ multiplications:
+\begin{align}
+g^2&= g\cdot g \label{sqrs}\\
+g^4&= (g^2)\cdot (g^2) \notag\\
+g^8&= (g^4)\cdot (g^4) \notag \\
+g^{16}&= (g^8)\cdot (g^8) \notag
+\end{align}
+In short, this uses basic exponent rules: $(g^{2^j})^2=g^{2\cdot
+  2^j}=g^{2^{j+1}}$.
+
+Now if the exponent is not a power of $2$, we write it as a sum of
+distinct powers of $2$.  This is always possible, and is equivalent to
+writting the number in base $2$.  We compute the powers as above, and
+then multiply together what we need.
+\begin{exam}
+  Suppose we want to compute $g^{19}$.  We first write
+  \[ 19=2^0+2^1+2^4\]
+  One way to find this is to start with the largest power of $2$ which
+  is $\leq 19$, subtract it from $19$, and repeat.
+
+  Next we compute squarings exactly as in equation~\eqref{sqrs} (four
+  steps), saving all of the results.  Then we compute
+  \[ g^{19} = g^{2^0+2^1+2^4} = g^{2^0}\cdot g^{2^1}\cdot g^{2^4}
+  = g\cdot g^2\cdot g^{16}\]
+and each of these three values have already been computed.  There are
+two more multiplications needed in the final expression.  The result
+is computed with $4$ squarings and $2$ multiplications, so $6$
+operations as oposed to $18$ with the naive algorithm.
+\end{exam}
+
+Historically, this is one of the oldest recorded algorithms when
+applied to the problem of multiplying two positive integers, which can
+be viewed as ``repeated addition'' in the additive group $\Z$, and is
+also known as Russian Peasant Multiplication.
+
+\subsection{Order of an element with a multiplicative bound}
+Let $G$ be a group and $g\in G$.  The question is: if we know $|g|$ is
+a divisor of $m$ for some $m\in\Z^+$, then how do we efficiently find
+$|g|$.  We give an algorithm which runs in polynomial time provided we
+can somehow factor $m$.  
+
+The algorithm is based on the following proposition.
+
+\begin{prop}
+  Suppose $G$ is a group, $g\in G$, and $m\in\Z^+$, such that $g^m=e$,
+  and $p$ a prime dividing $m$.  If $g^{m/p}\neq e$, then the exponent
+  of $p$ in the factorization of $m$ equals the exponent of $p$ in the
+  factorization of $|g|$.
+\end{prop}
+\begin{proof}
+  Let $m=p_1^{a_1}\cdots p_k^{a_k}$ be the prime power factorization
+  of $m$.  Reordering the factors, we can assume $p=p_1$.  Let
+  $n=|g|$.  Since $g^m=e$, $n\mid m$, and so we can factor $n$ over
+  the same set of primes $n=p_1^{b_1}\cdots p_k^{b_k}$ with $0\leq
+  b_i\leq a_i$ for all $i$.  We want to show $b_1=a_1$.
+
+  So, suppose $b_1<a_1$.  Then $n\mid (m/p)$ (recall $p=p_1$), which
+  implies $g^{m/p}=e$ \con.  Thus, $b_1=a_1$.
+\end{proof}
+
+If we apply the proposition to every prime dividing $m$, we get the
+following corollary which gives a criterion for checking if a value
+$m$ is the order of $g$.
+\begin{cor} \label{order-check}
+  Suppose $G$ is a group, $g\in G$, and $m\in\Z^+$ such that
+  \begin{itemize}
+  \item $g^m=e$
+  \item $g^{m/p}\neq e$ for every prime $p\mid m$
+  \end{itemize}
+  Them $m$ is the order of $g$.
+\end{cor}
+
+For the algorithm, suppose $G$ is a group, $g\in G$, $m\in\Z^+$ and
+$g^m=e$.  We then
+\begin{enumerate}
+\item Factor $m=p_1^{a_1}\cdots p_k^{a_k}$.
+\item Loop over the primes $p_i$.  For each $i$,
+  \begin{enumerate}
+  \item If $g^{m/p_i}=e$, replace $a_i$ with $a_i-1$.  If now $a_i=0$,
+    move to the next prime.  If $a_i$ is still positive, repeat this
+    step with the same prime $p_i$.
+    \item If $g^{m/p_i}\neq e$, move to the next prime $p_i$.
+  \end{enumerate}
+\end{enumerate}
+
+\begin{exam}
+ Let  $p=7129$, which is prime.  We want to find the order of $3467$
+ modulo $p$, i.e., in $\Z_{7129}^\times$.  By Fermat's Little Theorem,
+ we know $3467^{7128}\equiv 1\pmod{7129}$, so we have a starting value
+ of $m$.  We then factor $7128=2^3 3^4 11$, so we have three primes to
+ check.
+\begin{align*}
+  3467^{7128/2}&\equiv 7128\not\equiv 1\pmod{7129} \\
+    3467^{7128/3}&\equiv 1\pmod{7129}
+\end{align*}
+So, we revise of value of $m$ to $(2^33^4 11)/3=2376$ and check
+\begin{align*}
+    3467^{2376/3}&\equiv 1\pmod{7129}
+\end{align*}
+So, we revise again to $m=(2^3 3^3 11)/3=792$ and check
+\begin{align*}
+    3476^{792/3}&\equiv 5879\not\equiv 1\pmod{7129} \\
+    3476^{792/11}&\equiv 5899\not\equiv 1\pmod{7129}
+\end{align*}
+So, the order of $3476$ in $\Z_{7129}^\times$ is $729$.  Note, we did
+not have to recheck the exponent on $2$.
+\end{exam}
+There are lots of powers to compute in the example.  They can be
+computed by square and multiply, and even that can be sped up since we
+are always computing powers of $3476$ modulo $7129$.  So, we would
+only need to do the series of squarings once.  Then for each power, we
+just have to do the ``multiply'' stage.
+
+\subsubsection{Primality proving}
+For some cryptosystems, it is important to have large prime numbers.
+A test like Rabin-Miller is effective in finding composite numbers,
+but does not prove that an input is prime.
+Corollary~\ref{order-check} is the basis of a primality proving
+algorithm called the Pocklington-Lehmer test.  The algorithm we
+present here is a slight simplification of the test, but the
+difference in practice is negligible.
+
+Suppose we have $m\in\Z^+$ we think is prime and want to prove it is
+prime.  If we can find an integer $a$ which has order $m-1$, then
+$\varphi(m)=m-1$ since
+\[ m-1 \geq \varphi(m)=|\Z_m^\times|\geq |a| = m-1,\]
+so we have equality all the way across.  But, $\varphi(m)=m-1$ means
+all of the numbers $1,2,\ldots, m-1$ are relatively prime to $m$.  In
+particular, $m$ has no non-trivial divisors, so $m$ is prime.
+
+So, how can we find this value of $a$, just try $a=2, 3, 4, \ldots$
+until we find a winner.  If $m$ really is prime, such values must
+exist (existence of primitive roots modulo $p$), and their proportion
+cannot be too small.  For each $a$, we apply
+Corollary~\ref{order-check} to see if it has order $m-1$.
+
+The slowest part of this primality proving algorithm is that we must
+factor $m-1$.  So, it is not useful in all cases, but can be used to
+prove primality of numbers of special forms (where $m-1$ is easy to
+factor).
+
+
+\subsection{Order of an element given an archimedian bound}
+
+Let $G$ be a group and $g\in G$.  The question is: if we know
+$|g|\leq B$ for some bound $B$, then how do we efficiently find
+$|g|$. Algorithms for this are given in the text.  Baby-step
+Giant-step is a deterministic algorithm (with $O(\sqrt{B})$ steps and
+$O(\sqrt{B})$ storage), and Pollard's rho is a probabilistic algorithm
+(with $O(\sqrt{B})$ steps and constant storage).
+
+\section{Number theory background}
+
+We start with a definition.
+\begin{defn}\label{divides}
+  If $a,b\in\Z$, then we say that $a$ {\em divides} $b$
+  and write $a\mid b$ if there exists an integer $c$ such that $ac=b$.
+\end{defn}
+
+\begin{thm}[Division algorithm] \label{div-alg}
+  If $a\in \Z$ and $b\in\Z^+$, then there exists a unique pair of integers $q$ and $r$
+  such that $a=bq+r$ and $0\leq r<b$.
+\end{thm}
+With $a,b,q,r$ as above, we write $r=a\bmod b$.  Note, $r=0$ if and
+only if $b\mid a$.
+
+\begin{defn}
+  If $a,b\in\Z$, then
+  \begin{itemize}
+  \item if $a=b=0$, then we define $\gcd(a,b)=0$,
+  \item if $a\neq 0$ or $b\neq 0$, then we define $\gcd(a,b)$ to be
+    the largest integer $d$ such that $d\mid a$ and $d\mid b$.
+ \end{itemize}
+ \end{defn}
+
+The next theorem is also refered to as the Extended Euclidean
+Algorithm since values for $r$ and $s$ can be computed from the
+Euclidean algorithm plus a little more work.
+
+\begin{thm}[Bezout property] \label{bezout}
+  If $a,b\in\Z$, then there exist integers $r$ and $s$ such that
+  $$ ra+sb=\gcd(a,b).$$
+\end{thm}
+
+The next proposition is often proven as a step towards proving unique
+factorization in $\Z$.  The name comes from ring theory where one
+distinguishes prime elements from irreducible elements of a ring (the
+point here is that they are the same in $\Z$).
+
+\begin{prop}[Prime property] \label{prime-prop}
+  Let $n\in\Z$, $n>1$.  Then $n$ is prime if and only if
+  \[ \forall a,b\in\Z, n\mid ab\implies n\mid a \text{ or } n\mid b.\]
+\end{prop}
+\begin{proof}
+  $(\Rightarrow)$ Suppose $n\nmid a$.  Since $\gcd(a,n)$ divides $n$
+  and $n$ is prime $\gcd(a,n)=1$ or $n$.  But $n\nmid a$, so
+  $\gcd(n,a)=1$.  Then by the Bezout property (Thm.~\ref{bezout}), there
+  exists $r,s\in\Z$ such that $ra+sn=1$.  Multiplying by $b$ we get
+  $r(ab) + sn = b$.  Both terms on the left side are multiples of $n$,
+  so $n$ divides the right side, i.e., $n\mid b$.
+
+$(\Leftarrow)$
+Suppose not.  Since $n>1$ and is not prime, $n=ab$ for some $1<a\leq
+b<n$.  Thus $n\mid ab$, and so $n\mid a$ or $n\mid b$, which
+contradicts the inequalities on $a$ and $b$ \con.
+\end{proof}
+
+\begin{prop}
+  If $n\in\Z^+$, $a,b\in\Z$ such that $\gcd(a,n)=\gcd(b,n)=1$, then
+  $\gcd(ab,n)=1$.
+\end{prop}
+\begin{proof}
+  Suppose not.  Then there exists some prime $p$ such that $p\mid
+  \gcd(ab,n)$.  But then $p\mid ab$ and $p\mid n$.  By the Prime
+  Property (Prop.~\ref{prime-prop}), $p\mid a$ or $p\mid b$.  Thus, $1<p\leq
+  \gcd(a,n)$ or $1<p\leq \gcd(b,n)$ \con.
+\end{proof}
+
+\section{Cryto 101}
+\label{crypto-101}
+Here we provide the basic set up and notation we use for basic
+cryptography.  We have a set of possible messages, $\calP$, called the
+plaintexts.  It might be the set of $26$ letters, or the set of all
+$4$-letter strings, or anything.  A cryptosystem has a set of keys
+$\calK$, and a set of encoded  texts $\calC$ called ciphertexts.  The
+cryptosystem provides encryption and decryption functions depending on
+the key being used.  That is, for each $K\in\calK$, we have functions
+\[ e_K:\calP\to \calC \quad \text{ and }\quad d_K:\calC\to \calP\]
+so that encryption followed by decryption returns the original
+message:
+\[ d_K\circ e_K = I_{\calP}\]
+(the right hand side denotes the identity function on the set of
+plaintexts).
+
+Many cryptosystems encode one letter at a time, so $\calP$ may be the
+set of single letters (e.g., shift and affine ciphers), but others
+work naturally on blocks of several letters at a time (e.g., the Hill
+and Vigen\`ere ciphers).  In those cases, we let $\calA$ be the set of
+letters (i.e., our alphabet), and generally $\calP=\calC=\calA^n$, the
+set of $n$-letter strings for some fixed $n\in\Z^+$.
+
+\section{Lagrange's theorem}
+We make frequent use of Lagrange's theorem from group theory.
+\begin{thm}[Lagrange's theorem]
+  If $G$ is a finite group and $H$ is a subgroup of $G$, then $|G|$ is
+  a multiple of $H$.
+\end{thm}
+Most of the ingredients are already established.  In
+Section~\ref{coset-home}, we defined cosets of a subgroup and proved
+that all cosets of $H$ have $|H|$ elements.  To prove Lagrange's
+theorem, we need just one more lemma.
+\begin{lemma}
+  If $H$ is a subgroup of a group $G$, then the left cosets of $H$
+  partition $G$.
+\end{lemma}
+\begin{proof}
+  For all $g\in G$, $g=ge\in gH$, so every element of $G$ is in at
+  least one coset.  What remains is to prove that if two cosets have
+  non-trivial intersection, then they are the same set.
+
+  Suppose $a,b\in G$ and $aH\cap bH\neq \emptyset$.  Now, there exists
+  $x\in aH\cap bH$.  
+  So, there exists $h,k\in H$
+  such that $x=ah$ and $x=bk$.  Thus $ah=bk$, which implies
+  $a=bkh^{-1}$.  
+
+  Let $y\in aH$.  Then $y=at$ for some $t\in H$.
+  Substituting, we get
+  \[ y = at = (bkh^{-1}) t = b(kh^{-1} t)\in bH.\]
+  The final step follows because $H$ is a subgroup, and $h,k,t\in H$.
+  Thus, $aH\seq bH$.  The reverse inclusion now follows by reversing
+  the roles of $a$ and $b$, so $aH=bH$. 
+\end{proof}
+\begin{proof}[Proof of Lagrange's theorem]
+  We count the elements of $G$ by counting them by coset.  Each coset
+  has the same number of elements and they partition $G$, so 
+  \[ |G| = |H|\cdot \text{ the number of cosets of $H$.}\]
+  Therefore, $|G|$ is a multiple of $|H|$.
+\end{proof}
+To see how this works, it helps to see some examples of cosets.
+\begin{exam}
+  Let $G=\Z_7^*$, and $H=\{1,6\}$.  To find the left coset of say $2$,
+  we just compute
+  \[ 2H = \{2\cdot 1, 2\cdot 6\} = \{2, 5\}\]
+  where we do the computation modulo $7$.  Now all of the cosets are
+  \begin{align*}
+    1H &= \{1, 6\} \\
+    2H &= \{2, 5\} \\
+    3H &= \{3, 4\} \\
+    4H &= \{4, 3\} \\
+    5H &= \{5, 5\} \\
+    6H &= \{6, 1\} 
+  \end{align*}
+  We have $6$ elements in all, and each generates a left coset, but
+  there is duplication: $1H=6H$, $2H=5H$, and $3H=4H$.  So, there are
+  only $3$ distinct left cosets, they are pairwise disjoint, and each
+  has $2$ elements.  The count for Lagrange's theorem is then $3$
+  cosets with $2$ elements each for a total of $3\cdot 2=6$ elements.
+\end{exam}
+\begin{prob}
+  Repeat the computation in the example using $G=\Z_7^*$ and
+  $H=\{1,2,4\}$.
+\end{prob}
+
+
+
+
+
+
+
+
+
+\begin{comment}
+\newpage
+\section{Rest}
+
+\begin{itemize}
+\item Examples: additive groups
+\item Examples: multiplicative groups
+\item Integers mod $n$
+\begin{itemize}
+\item Connect congruences to congruence classes to working with
+  remainders
+\item Both additive and multiplicative groups
+\end{itemize}
+\item Cyclic subgroups
+\item Order of an element and basic facts about powers
+\item Connect to shift cipher
+\item Related to RSA
+\item Connected to $p-1$ factorization
+\item $GL_n(\Zn)$ and Hill cipher
+\item Products of groups
+\item Isomorphisms ($\R$ and $\R^+$)
+\item Structure of finite abelian groups -- compare with text
+\end{itemize}
+
+
+\section{Elliptic curves}
+\begin{itemize}
+\item Cannonball problem, square base, total is a square:
+\[ \sum_{j=1}^n j^2 = k^2\]
+or
+\[ \frac{j(j+1)(2j+1)}{6} = k^2\]
+
+\item Fermat's last theorem, $n=3$ case
+
+\item Congruent number problem: which integers $n$ equal the area of a
+  right triangle with rational sides is connected
+
+\item Fermat's last theorem, hard case $n=p$ with $p$ large: if
+\[ a^p+b^p=c^p\]
+consider $y^2=x(x-a^p)(x+b^p)$.
+
+\item Define, but then move to typical coordinates
+
+\item Simplify coords
+
+\item $(\prod_{i<j} r_i-r_j)^2=4A^3+27B^2\neq 0$
+
+\item General equation
+
+\item Group law:
+\[ m=\frac{y_2-y_1}{x_2-x_1}\quad y=m(x-x_1)+y_1\]
+Substitute
+\[ 0=x^3-m^2x^2+\cdots\]
+Divide away two roots, or note $x^3+ax^2+bx+c = (x-r)(x-s)(x-t)$ has
+$a=-(r+s+t)$, so $x_3 = -a-x_1-x_2 = m^2-x_1-x_2$ and
+$y=m(x-x_1)+y_1$.
+\item Then reflect: $x_3= m^2-x_1-x_2$, $y_3=m(x_1-x_3)-y_3$
+
+\item $P_1=P_2$, $2yy'=3x^2+A$, so $m=(3x_1^2+A)/(2y_1)$, continue as
+  before to get $x_3=m^2-2x_1$, $y_3 = m(x_1-x_3)-y_1$ (negated)
+
+\item This gives an abelian group
+
+\item $y^2=x^3+x+1$ over $\Z_5$.  Naive point search gives
+  $$\{(2,1),(2,4),(3,1),(3,4), (4,2), (4,3), (0,1), (0,4),
+  \mathcal{O}\}$$
+  a group with 9 points.
+
+  Doubling: $m=(3x^2+1)*3/y$, so for first point, we get for first
+  point $m=4$, $x=1-2\cdot 2=2$, $y=4(2-2)-1=4$
+
+
+\item Talk about $\Q$, $\R$, $\C$, and finite fields ($S^1$ for circle
+  group)
+\end{itemize}
+\end{comment}
+
+\end{document}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 

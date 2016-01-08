@@ -52,7 +52,7 @@
 \nc{\exdiv}{\,||\,}
 \nc{\Nr}{\textrm{N}}
 \nc{\gen}[1]{\langle #1\rangle}
-\renewcommand{\Im}{\textrm{Im}} % don't need imaginary part
+\renewcommand{\Im}{\mathrm{Im}} % don't need imaginary part
 \DeclareMathOperator{\Div}{Div}
 \DeclareMathOperator{\Pic}{Pic}
 \DeclareMathOperator{\ord}{ord}
@@ -1286,6 +1286,24 @@ If $G_1\cots G_n$ are groups and $(g_1\cots g_k)\in G_1\times\cdots
 \[ |(g_1\cots g_k)| = \operatorname*{lcm}_{1\leq i \leq k} |g_i|\]
 \end{enumerate}
 \end{prop}
+
+If we have a product of abelian groups, $H\times K$ and $m\in\Z^+$,
+then loosely the kernel of $[m]$ on $H\times K$ is the direct product
+of the map on each factor, and similarly for the image.  To make a
+formal statement, we will use $[m]_G$ to denote the multiplication by
+$m$ map on $G$.
+
+\begin{prop}\label{prodker}
+  If $H$ and $K$ are abelian groups and $m\in\Z^+$, then
+\[ \ker([m]_{H\times K}) = \ker([m]_H)\times \ker([m]_K)\]
+and
+\[ \Im([m]_{H\times K}) = \Im([m]_H)\times \Im([m]_K).\]
+\end{prop}
+By induction, this extends to a product of finitely many abelian
+groups.
+\begin{prob}
+  Prove Proposition~\ref{prodker}.
+\end{prob}
 
 \section{Rings}
 The definition of a ring applies to a couple of constructs we will

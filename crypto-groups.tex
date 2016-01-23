@@ -14,9 +14,9 @@
 \setlength{\extrarowheight}{1pt}
 
 \newcommand{\nc}{\newcommand}
-%\nc{\con}{\text{\reflectbox{\Lightning}\Lightning}}
+\nc{\con}{\text{\reflectbox{\Lightning}\Lightning}}
 %\nc{\con}{*}
-\nc{\con}{\includegraphics[keepaspectratio=true, width=1em]{lightn.png}}
+%\nc{\con}{\includegraphics[keepaspectratio=true, width=1em]{lightn.png}}
 \nc{\Q}{\mathbb{Q}}
 \nc{\Z}{\mathbb{Z}}
 \nc{\C}{\mathbb{C}}
@@ -44,6 +44,7 @@
 \nc{\orig}{\Oc}
 \nc{\fal}{f_\alpha}
 \nc{\cots}{, \ldots,}
+\nc{\ccots}{: \cdots:}
 \nc{\seq}{\subseteq}
 \nc{\pots}{+ \cdots +}
 \nc{\leg}[2]{{\displaystyle\left(\frac{#1}{#2}\right)}}
@@ -1252,7 +1253,7 @@ Thus,
 &\iff  (g_1\cots g_k)^m=(e_1\cots  e_k) \\
 &\iff  (g_1^m\cots g_k^m)=(e_1\cots  e_k) \\
 &\iff g_i^m=e_i \text{ for all $i$} \\
-&\iff m \text{ is a multiple of $g_i$ for all $i$}
+&\iff m \text{ is a multiple of $|g_i|$ for all $i$}
 \end{align*}
 This is the main part of the proof of the following.
 \begin{prop}
@@ -1451,7 +1452,7 @@ One of our most important examples of fields come from the rings $\Zn$.
   If $n$ is prime and $a\in \Zn-\{0\}$, then $n\nmid a$.  Since $n$ is
   prime, $\gcd(a,n)=1$, so by the Bezout property (Thm.~\ref{bezout}),
   there exists $r,s\in\Z$ such that $ra+sn=1$, which implies $ra\equiv
-  1\pmod n$.  Thus, every non-zero element is a unitin a commutative
+  1\pmod n$.  Thus, every non-zero element is a unit in a commutative
   ring with one (and $n>1$ implies $0\not\equiv 1\pmod n$), and so
   $\Zn$ is a field.
 
@@ -1618,7 +1619,7 @@ x &\equiv b\pmod n
 has a unique solution modulo $mn$.  The existence of this solution is
 equivalent to the statement that the map $\phi$ in Theorem~\ref{crt}
 is surjective, and the uniqueness is then equivalent to the statement
-that the solution is unique.  However, the the traditional version
+that $\phi$ is injective.  However, the the traditional version
 does not draw out the algebraic nature of the correspondence -- that
 $\phi$ is a ring homomorphism -- which is to many applications.
 
@@ -1742,18 +1743,18 @@ where if $\vec u=(x_0\cots x_n)$, then $\lambda\vec u = (\lambda x_0\cots
 \lambda x_n)$.
 We then let $\pr^n(K)=S/\sim$.
 
-As above, we let $[x_0\cots x_n]$ denote the equivalence class of
+As above, we let $[x_0\ccots x_n]$ denote the equivalence class of
 $(x_0\cots x_n)$.
 
 \subsection{Affine points and points at infinity}
 We can partition the points of $\pr^n(K)$ into two sets in a
 natural way.  Fix $i\in\{0\cots n\}$.  The two sets are
-\[ \{[x_0\cots x_n] \mid x_i\neq 0\} \text{ and } 
-\{[x_0\cots x_n] \mid x_i = 0\}. \]
-Although the coordinates of $[x_0\cots x_n]$ are only well-defined
+\[ \{[x_0\ccots x_n] \mid x_i\neq 0\} \text{ and } 
+\{[x_0\ccots x_n] \mid x_i = 0\}. \]
+Although the coordinates of $[x_0\ccots x_n]$ are only well-defined
 up to a non-zero scalar, the condition $x_i=0$ makes sense.
 
-If $[x_0\cots x_n]$ is in the first set, we can normalize the
+If $[x_0\ccots x_n]$ is in the first set, we can normalize the
 scaling by multiplying through by $\frac1{x_i}$.  This makes the
 $i$th coordinate $1$, and there is only one way to represent such
 a point with $x_i=1$.  There are $n$ coordinates $x_j$ with $j\neq i$,
@@ -1776,14 +1777,14 @@ So, we can break $\pr^n(K)$ into a disjoint union:
 The $K^n$ are called the affine points, and the $\pr^{n-1}(K)$ are
 the points at infinity.  Note, we initially picked $i\in\{0\cots n\}$,
 so there are $n+1$ choices for $i$, and each gives a different decomposition.
-A given point $[x_0\cots x_n]$ ends up being an affine point in the 
+A given point $[x_0\ccots x_n]$ ends up being an affine point in the 
 decomposition for $i$ if $x_i\neq 0$, and is a point at infinity where
 $x_i=0$.
 
-On one hand, a point like $[1,2,3]\in\pr^2(\R)$ is an affine point in all
-three of the decompositions, the point $[1,0,2]$ is an affine point in two
+On one hand, a point like $[1:2:3]\in\pr^2(\R)$ is an affine point in all
+three of the decompositions, the point $[1:0:2]$ is an affine point in two
 decompositions and gives a point at infinity for the third (when $i=1$).
-Importantly, every point $[x_0\cots x_n]\in\pr^n(K)$ has some $x_i\neq 0$
+Importantly, every point $[x_0\ccots x_n]\in\pr^n(K)$ has some $x_i\neq 0$
 (from the original construction), so every point is an affine point for
 at least one of the decompositions.
 
@@ -1795,7 +1796,7 @@ lives in at least one affine subset of projective space, so we can
 switch to affine coordinates when dealing with that point.
 
 We illustrate the process with $\pr^2(\R)$.  For projective
-coordinates, we will use capital letters: $[X,Y,Z]$.  There are three
+coordinates, we will use capital letters: $[X:Y:Z]$.  There are three
 affine spaces covering $\pr^2(\R)$, but our favorite will be the set
 where $Z\neq 0$.  On this set, the transition between affine and
 projective coordinates is
@@ -1822,7 +1823,7 @@ going from affine to projective coordinates is called homogenization.
 
 Note that if $f(X,Y,Z)=0$ is homogeneous of degree $d$, then every
 monomial has total degree $d$, so $f(\lambda X, \lambda Y, \lambda Z)=
-\lambda^d f(X,Y,Z)$.  So, if one representative of $[a,b,c]$ is a
+\lambda^d f(X,Y,Z)$.  So, if one representative of $[a:b:c]$ is a
 solution to $f(X,Y,Z)=0$, then so is every representative $(\lambda a,
 \lambda b, \lambda c)$.  So it is fitting to use homogeneous equations
 when using projective coordinates.
@@ -1856,8 +1857,8 @@ we may go back to $X_0\cots X_n$.
 \subsubsection{Dehomogenization}
 Dehomogenization is simple.  If we want to dehomogenize with respect
 to the variable $x_i$, we use the correspondence
-\[ (x_0\cots x_{i-1}, x_{i+1}\cots x_n) \leftrightarrow [X_0\cots
-X_{i-1},1,X_{i+1}\cots X_n].\]
+\[ (x_0\cots x_{i-1}, x_{i+1}\cots x_n) \leftrightarrow [X_0\ccots
+X_{i-1},1,X_{i+1}\ccots X_n].\]
 So, we replace $X_i$ with $1$, and convert the other variables
 accordingly.
 \begin{exam}
@@ -1876,13 +1877,13 @@ projective coordinates are consistent, but not the two sets of affine
 coordinates.  For this reason, we will usually use different variable
 names for different dehomogenizations.
 
-Usually, we work in $\pr^2$ with coordinates $[X,Y,Z]$.  The affine
+Usually, we work in $\pr^2$ with coordinates $[X:Y:Z]$.  The affine
 coordinates with $Z=1$ will be $(x,y)$, which means we need to pick
 other letters for the other dehomogenizations.
 \begin{exam}
   Dehomogenize $X^3+XYZ + 2XZ^2 -3Z^3 = Y^2Z$ with respect to $Y$.
   Here we will use $u=X/Y$ and $v=Z/Y$.  The process is to set $Y=1$,
-  replace $X$ with $u$ , and replace $Z$ with $v$, which gives
+  replace $X$ with $u$, and replace $Z$ with $v$, which gives
   $u^3+uv+2uv^2-3v^3 = v$.
 \end{exam}
 
@@ -1898,14 +1899,14 @@ gives $Y=mX$.  Note, if one point is a solution to
 this equation, then all of its scalar multiples are solutions, but
 these multiples are all representatives of the same projective point.
 So, we are only interested in solutions up to scalar multiplication.
-In this case, we get one point: $[1,m,0]$.
+In this case, we get one point: $[1:m:0]$.
 
 Note, any two lines with slope $m$ hit the same point at infinity.  If
-we consider vertical lines, they a similar computation shows that they
-have one point at infinity, namely $[0,1,0]$.
+we consider vertical lines, then a similar computation shows that they
+have one point at infinity, namely $[0:1:0]$.
 \begin{prob}
   Show that the line $x=c$ has one point at infinity, namely
-  $[0,1,0]$.
+  $[0:1:0]$.
 \end{prob}
 
 This points out part of the appeal of working in projective space.
@@ -1926,7 +1927,7 @@ The homogenization of the equation is $X^2-Y^2=Z^2$.
 Setting $Z=0$ gives 
 \[ X^2-Y^2=0 \iff Y=\pm X. \]
 Up to scalar multiplication, this gives get two projective points:
-$[1,1,0]$, and $[1,-1,0]$.  These match the points at infinity for the
+$[1:1:0]$, and $[1:-1:0]$.  These match the points at infinity for the
 two asymptotes.
 
 As a final example, consider the equation
@@ -1946,7 +1947,7 @@ equation $u^2=-3$ (with $u=X/Y$).
 Over $\R$, we get no solutions, so there are no points at infinity in
 $\pr^2(\R)$.  However, over $\C$ there are solutions, $u=\pm i\sqrt
 3$.  Going back to projective coordinates, this gives two points
-$[\sqrt{3}i,1,0]$ and $[-\sqrt{3}i,1,0]$. 
+$[\sqrt{3}i:1:0]$ and $[-\sqrt{3}i:1:0]$. 
 
 \subsubsection{Quadratic curves}
 
@@ -2042,7 +2043,7 @@ so it is the inverse image of a particular point.
      \implies f(x)= f(a). \]
 This implies $x\in f^{-1}(f(a))$.  
 
-Now suppose $x\in f^{-1}f(a))$.  Then $f(x)=f(a)$, which implies
+Now suppose $x\in f^{-1}(f(a))$.  Then $f(x)=f(a)$, which implies
 \[ e=f(x)f(a)^{-1} = f(x) f(a^{-1}) = f(xa^{-1}).\]
 Thus, 
 $$xa^{-1}\in \ker(f) \implies xa^{-1} = h \text{ for some $h\in\ker(f)$}.$$
@@ -2198,7 +2199,7 @@ typically get powers of $\alpha$ as high as $\alpha^{2n-2}$.
 
 \subsection{Finite fields}
 
-If a {\em finite field} is simply a field $K$ which is a finite set.
+A {\em finite field} is simply a field $K$ which is a finite set.
 The most familiar examples are $\Z_p$ with $p$ prime.  In general,
 one can prove
 \begin{itemize}
@@ -2431,7 +2432,7 @@ point here is that they are the same in $\Z$).
   and $n$ is prime $\gcd(a,n)=1$ or $n$.  But $n\nmid a$, so
   $\gcd(n,a)=1$.  Then by the Bezout property (Thm.~\ref{bezout}), there
   exists $r,s\in\Z$ such that $ra+sn=1$.  Multiplying by $b$ we get
-  $r(ab) + sn = b$.  Both terms on the left side are multiples of $n$,
+  $r(ab) + snb = b$.  Both terms on the left side are multiples of $n$,
   so $n$ divides the right side, i.e., $n\mid b$.
 
 $(\Leftarrow)$
@@ -2451,7 +2452,7 @@ contradicts the inequalities on $a$ and $b$ \con.
   \gcd(a,n)$ or $1<p\leq \gcd(b,n)$ \con.
 \end{proof}
 
-\section{Cryto 101}
+\section{Crypto 101}
 \label{crypto-101}
 Here we provide the basic set up and notation we use for basic
 cryptography.  We have a set of possible messages, $\calP$, called the

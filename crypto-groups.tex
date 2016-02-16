@@ -14,12 +14,12 @@
 \setlength{\extrarowheight}{1pt}
 
 % it would be better if the bf and it did not apply in math mode
-\newcommand{\terminology}[1]{\textbf\textit{#1}}
-\newcommand{\term}{\term}
+\newcommand{\terminology}[1]{\textbf{\textit{#1}}}
+\newcommand{\term}{\terminology}
 
 \newcommand{\nc}{\newcommand}
 \nc{\con}{\text{\reflectbox{\Lightning}\Lightning}}
-\nc{\con}{\includegraphics[keepaspectratio=true, width=1em]{lightn.png}}
+%\nc{\con}{\includegraphics[keepaspectratio=true, width=1em]{lightn.png}}
 %\def\con{&nbsp;&#9889;&#9889;&nbsp;}
 \nc{\Q}{\mathbb{Q}}
 \nc{\Z}{\mathbb{Z}}
@@ -42,8 +42,10 @@
 \nc{\Qbar}{\overline{\Q}}
 \nc{\Qpbar}{\overline{\Q}_p}
 \nc{\cfp}{\mathcal{F}_p}
-\nc{\calA}{\mathcal{A}}    \nc{\calC}{\mathcal{C}}
-\nc{\calP}{\mathcal{P}}    \nc{\calK}{\mathcal{K}}
+\nc{\calA}{\mathcal{A}}
+\nc{\calC}{\mathcal{C}}
+\nc{\calP}{\mathcal{P}}
+\nc{\calK}{\mathcal{K}}
 \nc{\Oc}{\mathcal{O}}
 \nc{\orig}{\Oc}
 \nc{\fal}{f_\alpha}

@@ -13,9 +13,14 @@
 
 \setlength{\extrarowheight}{1pt}
 
+% it would be better if the bf and it did not apply in math mode
+\newcommand{\terminology}[1]{\textbf\textit{#1}}
+\newcommand{\term}{\term}
+
 \newcommand{\nc}{\newcommand}
 %\nc{\con}{\text{\reflectbox{\Lightning}\Lightning}}
-\nc{\con}{\includegraphics[keepaspectratio=true, width=1em]{lightn.png}}
+%\nc{\con}{\includegraphics[keepaspectratio=true, width=1em]{lightn.png}}
+\def\con{&nbsp;&#9889;&#9889;&nbsp;}
 \nc{\Q}{\mathbb{Q}}
 \nc{\Z}{\mathbb{Z}}
 \nc{\C}{\mathbb{C}}
@@ -131,19 +136,30 @@ specify what natural algebraic structures these sets possess even
 though those structures are not defined until later sections.
 
 We let
-\begin{align*}
-&\Z = \text{the set of integers} \quad\text{(a group under $+$ and a ring)} \\
-&\Q = \text{the set of rational numbers}  \quad\text{(a group under $+$ and a field)} \\
-&\R = \text{the set of real numbers}  \quad\text{(a group under $+$ and a field)} \\
-&\C= \text{the set of complex numbers} \quad\text{(a group under $+$ and a field)} \\
-&\Qstar= \{a\in\Q\mid a\neq 0\} \quad\text{(a group under multiplication)}\\
-&\Rstar= \{a\in\R\mid a\neq 0\} \quad\text{(a group under multiplication)}\\
-&\Cstar= \{a\in\C\mid a\neq 0\}\quad\text{(a group under multiplication)}\\
-&\Zn = \text{integers modulo $n$} \quad\text{(a group under $+$ and a ring)} \\
-&\mathbb N=\{a\in\Z\mid a\geq 0\} 
-\end{align*}
+\begin{enumerate}
+\item[] $\term{\Z}$ :  the set of integers \quad (a group under $+$ and a ring)
+\item[] $\term{\Q}$ :  the set of rational numbers  \quad (a group under $+$ and a field)
+\item[] $\term{\R}$ :  the set of real numbers  \quad (a group under $+$ and a field)
+\item[] $\term{\C}$ : the set of complex numbers \quad (a group under $+$ and a field)
+\item[] $\term{\Qstar}$ : $\{a\in\Q\mid a\neq 0\}$ \quad (a group under multiplication)
+\item[] $\term{\Rstar}$ : $\{a\in\R\mid a\neq 0\}$ \quad (a group under multiplication)
+\item[] $\term{\Cstar}$ : $\{a\in\C\mid a\neq 0\}$\quad (a group under multiplication)
+\item[] $\term{\Zn}$ :  integers modulo $n$ \quad (a group under $+$ and a ring)
+\item[] $\term{\mathbb N}$ : $\{a\in\Z\mid a\geq 0\}$ 
+\end{enumerate}
+%\begin{align*}
+%&\Z = \text{the set of integers} \quad\text{(a group under $+$ and a ring)} \\
+%&\Q = \text{the set of rational numbers}  \quad\text{(a group under $+$ and a field)} \\
+%&\R = \text{the set of real numbers}  \quad\text{(a group under $+$ and a field)} \\
+%&\C= \text{the set of complex numbers} \quad\text{(a group under $+$ and a field)} \\
+%&\Qstar= \{a\in\Q\mid a\neq 0\} \quad\text{(a group under multiplication)}\\
+%&\Rstar= \{a\in\R\mid a\neq 0\} \quad\text{(a group under multiplication)}\\
+%&\Cstar= \{a\in\C\mid a\neq 0\}\quad\text{(a group under multiplication)}\\
+%&\Zn = \text{integers modulo $n$} \quad\text{(a group under $+$ and a ring)} \\
+%&\mathbb N=\{a\in\Z\mid a\geq 0\} 
+%\end{align*}
 A superscript of $+$ means we want the positive elements, so
-$$\Z^+=\{a\in \Z\mid a>0\},$$ and similarly for $\Q^+$ and $\R^+$.
+$$\term{\Z^+}=\{a\in \Z\mid a>0\},$$ and similarly for $\term{\Q^+}$ and $\term{\R^+}$.
 
 If we have a set $R$ and positive integer $n\in\Z^+$, then we let
 \[ M_n(R)=\{n\times n \text{ matrices with entries from $R$}\}.\]
@@ -303,9 +319,9 @@ for some $k\in\Z$.  Since $\gcd(b,n)\mid b$ and $\gcd(b,n)\mid n$,
 \end{exam}
 
 By Proposition~\ref{gcd-well-def}, we can define
-\[ \Znstar = \{[a]_n\in\Zn\mid \gcd(a,n)=1\},\]
+\[ \term{\Znstar} = \{[a]_n\in\Zn\mid \gcd(a,n)=1\},\]
 and define the Euler phi-function for $n\in\Z^+$:
-\[ \varphi(n) = |\Znstar|.\]
+\[ \term{\varphi(}n) = |\Znstar|.\]
 Note, although $\Z_1=[0]_1$ has only one element, $\gcd(0,1)=1$ so
 $\Z_1^\times=\{[0_1]\} = \{[1]_1\}$, giving $\varphi(1)=1$.
 
@@ -324,7 +340,7 @@ which is central to the definition of group.
 \subsection{Binary operations}
 
 \begin{defn}
-A \emph{binary operation} $*$ on a set $S$ is a function
+A \term{binary operation} $*$ on a set $S$ is a function
 \[ *:S\times S \to S.\]
 We write $a*b$ for the value of this function on the ordered pair
 $(a,b)\in S$.
@@ -355,12 +371,12 @@ satisfy.
 \begin{defn}
   Let $*$ be a binary operation on a set $S$.
 \begin{itemize}
-\item  $*$ is \emph{associative} if for all
+\item  $*$ is \term{associative} if for all
   $a,b,c\in S$,
   \[ a*(b*c)=(a*b)*c.\]
-\item $*$ is \emph{commutative} if for all $a,b\in S$,
+\item $*$ is \term{commutative} if for all $a,b\in S$,
   \[ a*b = b*a.\]
-\item $*$ has \emph{identity} $e$ if $e\in S$ and for all $a\in S$,
+\item $*$ has \term{identity} $e$ if $e\in S$ and for all $a\in S$,
   \[ a*e=e*a=a.\]
 \end{itemize} 
 \end{defn}
@@ -395,7 +411,7 @@ binary operation, then it is unique.
 We have one more definition.
 \begin{defn}
   Let $*$ be a binary operation on a set $S$ which has identity $e$.
-  If $a\in S$, we say that $b\in S$ is an \emph{inverse} of $a$ if
+  If $a\in S$, we say that $b\in S$ is an \term{inverse} of $a$ if
   \[ a*b=b*a=e.\]
 \end{defn}
 When an inverse exists, it is unique.
@@ -436,7 +452,7 @@ the only elements with inverses are $1$ and $-1$ (because $1\cdot 1 =
 
 \subsection{Definition of group}
 \begin{defn}
-  A \emph{group} is a set $G$ with a binary operation $*$ such that 
+  A \term{group} is a set $G$ with a binary operation $*$ such that 
 \begin{enumerate}
 \item $*$ is associative
 \item $G$ has an identity element for $*$
@@ -480,7 +496,7 @@ element has a unique inverse.
 \end{remark}
 
 \begin{defn}
-  A group $G$ is \emph{abelian} if the operation is commutative.
+  A group $G$ is \term{abelian} if the operation is commutative.
 \end{defn}
 It might seem more natural to call these groups commutative groups,
 but the terminology is universally accepted in
@@ -505,11 +521,11 @@ If we restrict the domain of the binary operation from
 $G\times G$ to $H\times H$, and then want the results to always lie in
 $H$.  In other words, for all $a,b$,
 \[ a,b\in H \implies a*b\in H.\]
-When this happens, we say that $H$ is \emph{closed under $*$}.
+When this happens, we say that $H$ is \term{closed under} $*$.
 
 \begin{defn}
   If $G$ is a group with operation $*$ and $H\seq G$, then we say that
-  $H$ is a \emph{subgroup} of $G$ if
+  $H$ is a \term{subgroup} of $G$ if
   \begin{enumerate}
   \item $H$ is closed under $*$,
   \item the identity element $e$ for $G$ is in $H$,
@@ -564,7 +580,7 @@ Let $G$ be a group with identity $e$.  Then $c*c=c$ if and only if $c=e$.
 Groups are fun, but they are much more fun when they are doing
 something, like acting on a set.
 \begin{defn}
-  Let $G$ be a group and $S$ a set.  An \emph{action} of $G$ on $S$ is a
+  Let $G$ be a group and $S$ a set.  An \term{action} of $G$ on $S$ is a
   function
   \[ \cdot:G\times S\to S\]
   such that
@@ -595,7 +611,7 @@ we use addition to define the action.
 
 \begin{exam} If $G$ is a group, define an action of $G$ on $G$ by $g\cdot
 a=ga$.  In other words, we use the group operation to define the
-action.  This particular action is famous and is known as \emph{left
+action.  This particular action is famous and is known as \term{left
   translation}.
 \end{exam}
 
@@ -628,7 +644,7 @@ d_k(e_k(P)) &= d_k(k\cdot P) \\
 We now consider some classic ciphers, and see how they are examples of
 this one idea.
 \subsection{Shift Cipher}
-For the \emph{shift cipher},
+For the \term{shift cipher},
 $\calP=\calC=\calA=\calK=\Zn=G$.
 We let $G$ act on itself by left
 translation, so for a key $k\in G$, our encryption is given by
@@ -639,9 +655,9 @@ Decryption is simply
 
 
 \subsection{Affine Cipher}
-For the \emph{affine cipher}, we let $\calA=\calP=\calC=\Zn$.
+For the \term{affine cipher}, we let $\calA=\calP=\calC=\Zn$.
 Our group is
-the \emph{affine group modulo $n$}:
+the \term{affine group modulo $n$}:
 \[ \textit{Aff}(n) = \{ ax+b\mid a\in \Zn^\times\text{ and } b\in\Zn\}\]
 where the operation is composition.
 \begin{prob}
@@ -656,7 +672,7 @@ there exists $a'\in\Z_n^\times$ such that $aa'\equiv 1\pmod n$.  Then
 \[d_{ax+b}(c) = a'(c-b).\]
 
 \subsection{Hill Cipher}
-For the \emph{Hill cipher}, we let $\calA=\Zn$ and pick
+For the \term{Hill cipher}, we let $\calA=\Zn$ and pick
 $m\in\Z^+$.  Then we take $\calP=\calC=\Z_n^m$.
 The group 
 \[ G=\GL_m(\Zn)=\{A\in M_m(\Zn)\mid \det(A)\in \Z_n^\times\}\]
@@ -672,8 +688,8 @@ where $A^{-1}$ is the inverse of $A$ modulo $n$.
 
 
 \subsection{Permutation Cipher}
-Let $n\in\Z^+$.  A \emph{permutation} on a set $A$ is a bijective
-function $f:A\to A$.  The \emph{symmetric group} on $A$ is
+Let $n\in\Z^+$.  A \term{permutation} on a set $A$ is a bijective
+function $f:A\to A$.  The \term{symmetric group} on $A$ is
 \[ S_A = \{ f:A\to A\mid \text{$f$ is a permutation}\}.\]
 This is a group under composition:
 \begin{itemize}
@@ -781,7 +797,7 @@ what an LFSR is, and how the general process produces an LFSR.
 Then again, it may be deleted at a later time.}
 \end{comment}
 
-A \emph{linear feedback shift register}, or LFSR, is a type of stream
+A \term{linear feedback shift register}, or LFSR, is a type of stream
 cipher.  We imagine that the plaintext has been converted to a long
 bitstring (string of zeros and ones).  The idea is to use a small
 amount of information to produce a seemingly random infinite
@@ -855,7 +871,7 @@ multiplying them in $G_2$.
 Formally, this leads to
 \begin{defn}
   If $G_1$ is a group with operation $*$ and $G_2$ is a group with
-  operation $*'$, then an \emph{isomorphism from $G_1$ to $G_2$} is a
+  operation $*'$, then an \term{isomorphism} from $G_1$ to $G_2$} is a
   bijective function
   \[ f:G_1\to G_2\]
   such that
@@ -894,7 +910,7 @@ operations, but are not necessarily bijective:
   \[ f:H\to K\]
   such that
   \[ f(a*b)  = f(a)*'f(b)\qquad\text{for all $a,b\in H$}\]
-  is called a \emph{homomorphism from $H$ to $K$}.
+  is called a \term{homomorphism} from $H$ to $K$}.
 \end{defn}
 
 \begin{exam}
@@ -904,13 +920,13 @@ operations, but are not necessarily bijective:
 \begin{exam}
   If $n$ is a positive integer, the map $f:\Z\to \Zn$ given by 
   \[ f(a) = \text{ the congruence class of $a$ modulo $n$} \]
-  is a homomorphism called the \emph{reduction map}.  It is onto, but
+  is a homomorphism called the \term{reduction map}.  It is onto, but
   not 1-1.
 \end{exam}
 \begin{exam}
   If $H$ and $K$ are any two groups, the constant function $f:H\to K$
   given by $f(a)=e_K$ for all $a\in H$ is a homomorphism, called the
-  \emph{trivial map}.  If $H$ and $K$ have more than one element each,
+  \term{trivial map}.  If $H$ and $K$ have more than one element each,
   it is neither 1-1 nor onto.
 \end{exam}
 
@@ -945,8 +961,8 @@ An important construction for homomorphsims is its kernel.  In
 the linear algebra situation, this is the same as the kernel, which
 is also called the null space.
 \begin{defn}
- If $f:G\to K$ is a group homomorphism, the \emph{kernel} of $f$ is
- \[ \ker(f) = \{g\in G\mid f(g) = e_K\}.\]
+ If $f:G\to K$ is a group homomorphism, the \term{kernel} of $f$ is
+ \[ \term{\ker}(f) = \{g\in G\mid f(g) = e_K\}.\]
 \end{defn}
 \begin{prob}
 Suppose $f:G\to K$ is a homomorphism.  Prove $\ker(f)$ is a subgroup
@@ -1019,8 +1035,8 @@ inverse of $g$ (which is already our notation).
 
 
 \begin{defn}
-  Let $G$ be a group and $g\in G$.  Then the \emph{cyclic subgroup
-    generated by $g$} is
+  Let $G$ be a group and $g\in G$.  Then the \term{cyclic subgroup}
+    generated by $g$ is
   \[ \gen g = \{ g^n\mid n\in\Z\}.\]
 \end{defn}
 If the group uses additive notation, then
@@ -1329,12 +1345,12 @@ a couple of examples which will be relevant.
 \end{remark}
 All of our rings will satisfy the next property.
 \begin{defn}
-  A ring $R$ is a \emph{ring with one} if $R$ has an identity for
+  A ring $R$ is a \term{ring with one} if $R$ has an identity for
   multiplication.
 \end{defn}
 Most of the our rings satisfy the next condition as well.
 \begin{defn}
-  A ring is a \emph{commutative ring} if multiplication is
+  A ring is a \term{commutative ring} if multiplication is
   commutative.
 \end{defn}
 
@@ -1394,7 +1410,7 @@ The proof that $0=0\cdot a$ is similar and left to the reader.
 \begin{exam}
   Let $R=\{0\}$ as a subset of $\Z$.  We note that this one element
   set is a ring with the usual addition and multiplication.  It is
-  called the \emph{trivial ring}, and has the peculiar property that
+  called the \term{trivial ring}, and has the peculiar property that
   $0_R=1_R$.
 \end{exam}
 \begin{prob} \label{triv-ring-crit}
@@ -1406,7 +1422,7 @@ The proof that $0=0\cdot a$ is similar and left to the reader.
 We start with a definition.
 \begin{defn}
 Let $R$ be a ring with one.  An element $a\in $ which has an inverse under
-multiplication is called a \emph{unit}.  
+multiplication is called a \term{unit}.  
 \end{defn}
 By Proposition~\ref{unique-inverse}, the multiplicative inverse of a unit
 is unique.  It is not hard to prove that the set of units forms a
@@ -1448,7 +1464,7 @@ results from linear algebra is that
 \subsection{Endomorphisms of groups}
 Let $A$ be an abelian group written additively.
 \begin{defn}
-  An \emph{endomorphism} of an abelian group $A$ is a homomorphism
+  An \term{endomorphism} of an abelian group $A$ is a homomorphism
   $f:A\to A$.  The set of all endomorphisms of $A$ is denoted by $\End(A)$.
 \end{defn}
 If $f,g\in\End(A)$, we can define their sum $(f+g):A\to A$ by function
@@ -1468,7 +1484,7 @@ every element to $0$ is the identity for addition.
 \section{Fields}
 
 \begin{defn}
-  A \emph{field} $F$ is a commutative ring with one with $1_F\neq 0_F$,
+  A \term{field} $F$ is a commutative ring with one with $1_F\neq 0_F$,
   and every non-zero element is a unit.
 \end{defn}
 \begin{remark}
@@ -1540,8 +1556,8 @@ The notion of characteristic can be applied to any ring, but will work
 in the context of rings with one.
 \begin{defn}
   Let $R$ be a ring with one.  If $1_R$ has infinite order in the
-  additive group, we say $R$ has \emph{characteristic zero}.  Otherwise, the
-  \emph{characteristic of $R$} is the order of $1_R$ under addition.  We
+  additive group, we say $R$ has \term{characteristic zero}.  Otherwise, the
+  \term{characteristic} of $R$ is the order of $1_R$ under addition.  We
   denote the characteristic of $R$ by $\chr(R)$.
 \end{defn}
 Recall that in a additive group, we defined $n\cdot a$ where
@@ -2064,7 +2080,7 @@ all left cosets (of a given subgroup) have the same number of
 elements.  First, we should define left coset.
 \begin{defn}
   If $G$ is a group, $H$ is a subgroup of $G$, and $a\in G$, then the
-  \emph{left coset of $a$}, denoted $aH$ is the set
+  \term{left coset} of $a$, denoted $aH$ is the set
   \[ aH=\{ah\mid h\in H\}.\]
 \end{defn}
 Recall that if $f:G_1\to G_2$ is a homomorphism, then $\ker(f)$, the
@@ -2136,7 +2152,7 @@ is $\alpha+\beta$ and $\alpha\beta$.
 \end{exam}
 
 When considering roots of polynomials, we can multiply by a non-zero
-constant.  So, we normally deal with \emph{monic} polynomials, i.e.,
+constant.  So, we normally deal with \term{monic} polynomials, i.e.,
 ones whose highest degree coefficient is $1$.
 
 Similarly, when considering the factorization of monic polynomials, we
@@ -2428,7 +2444,7 @@ $O(\sqrt{B})$ storage), and Pollard's rho is a probabilistic algorithm
 
 We start with a definition.
 \begin{defn}\label{divides}
-  If $a,b\in\Z$, then we say that $a$ \emph{divides} $b$
+  If $a,b\in\Z$, then we say that $a$ \term{divides} $b$
   and write $a\mid b$ if there exists an integer $c$ such that $ac=b$.
 \end{defn}
 

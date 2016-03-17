@@ -2292,6 +2292,18 @@ about $\Z_p$ as a field, and $\Z_p$ if we want to emphasize that we
 are dealing with integers modulo $p$, or that we have a cyclic group
 of order $p$.
 
+\subsection{Characteristic $p$}
+Let $F$ be a field with prime characteristic $p$.  In particular, this
+applies to any finite field.  Our goal here is to prove the following
+proposition, and see some of its consequences.
+\begin{prop}[Freshman Dream]
+If $\chr(F)=p$ and $a,b\in F$, then
+\[ (a+b)^p=a^p+b^p.\]
+\end{prop}
+We will use the binomial theorem, that
+\[ (a+b)^n=\sum_{i=0}^n \binom{n}{i} a^ib^{n-i}\]
+where the coefficients
+\[ \binom{n}{i} = \frac{n(n-1)(n-2)\cdots(n-i+1)}{i!}.\]
 
 \section{Group algorithms}
 

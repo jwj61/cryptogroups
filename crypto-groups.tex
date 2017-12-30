@@ -806,14 +806,10 @@ A \term{linear feedback shift register}, or LFSR, is a type of stream
 cipher.  We imagine that the plaintext has been converted to a long
 bitstring (string of zeros and ones).  The idea is to use a small
 amount of information to produce a seemingly random infinite
-bitstring, called the key stream), which is added modulo $2$ to the
+bitstring, called the key stream, which is added modulo $2$ to the
 plaintext to obtain the ciphertext.  Decryption is accomplished by
 adding the key stream again.
 
-We will not go into the details here, but one can form a general
-stream cipher based on a group acting on a set.  An LFSR is a special
-case of this general construction.  The set is $\Z_2^m$, the group
-is $\GL_m(\Z_2)$, and the action is the usual matrix times vector.
 \begin{comment}
 Let $n$ be a positive integer.  An $n$-stage LFSR generates its key
 stream by a linear recurrence relation
@@ -851,6 +847,10 @@ x_{n+4} &= c_4x_{n+3}+c_3 x_{n+2}+c_2 x_{n+1}+ c_1x_n \bmod 2 \\
 Taps: $c_1$, \ldots, $c_4$ \\
 Initial load: $[x_1,\ldots, x_4]$
 
+We will not go into the details here, but one can form a general
+stream cipher based on a group acting on a set.  An LFSR is a special
+case of this general construction.  The set is $\Z_2^m$, the group
+is $\GL_m(\Z_2)$, and the action is the usual matrix times vector.
 
 
 

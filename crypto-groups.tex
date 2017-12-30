@@ -9,7 +9,7 @@
 %\usepackage{wrapfig}
 \usepackage{array}
 \usepackage{amscd}
-%\usepackage[all]{xy}
+\usepackage[all]{xy}
 
 \setlength{\extrarowheight}{1pt}
 
@@ -833,6 +833,24 @@ we assume $c_0=1$.
 
 %The key stream is also determined by  the \emph{initial
 % loading} of the LFSR, i.e., the first $n$ bits in the sequence.
+
+
+  \xymatrix@R-5pt{
+& \ar[rrrr] & &  &  &  {\bigoplus} \ar `d/1pt[d] [ld] \\
+\ldots01011001
+&   *+[F]{x_n} \ar[l] \ar[u]_{c_1} & *+[F]{x_{n+1}} \ar[l]
+  \ar[u]_{c_2} &*+[F]{x_{n+2}} \ar[l] \ar[u]_{c_3} &*+[F]{x_{n+3}} \ar[l]
+  \ar[u]_{c_4}&   \\
+}
+
+
+\begin{align*}
+x_{n+4} &= c_4x_{n+3}+c_3 x_{n+2}+c_2 x_{n+1}+ c_1x_n \bmod 2 \\
+&= \sum_{j=1}^4 c_j x_{n+j-1}\bmod 2
+\end{align*}
+Taps: $c_1$, \ldots, $c_4$ \\
+Initial load: $[x_1,\ldots, x_4]$
+
 
 
 

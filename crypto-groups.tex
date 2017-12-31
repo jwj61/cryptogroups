@@ -798,57 +798,21 @@ example.
 \end{prob}
 
 \subsection{LFSRs}
-\begin{comment}
-\textbf{This section is not finished.  It needs an explanation of
-how to generically make a stream cipher from a group action,
-what an LFSR is, and how the general process produces an LFSR.
-Then again, it may be deleted at a later time.}
-\end{comment}
+For background on LFSRs, see Chapter~\ref{lfsr}.  
 
-A \term{linear feedback shift register}, or LFSR, is a type of stream
-cipher.  We imagine that the plaintext has been converted to a long
-bitstring (string of zeros and ones).  The idea is to use a small
-amount of information to produce a seemingly random infinite
-bitstring, called the key stream, which is added modulo $2$ to the
-plaintext to obtain the ciphertext.  Decryption is accomplished by
-adding the key stream again.
+If an $n$-stage LFSR has associated matrix $C\in\GL_n(\Z_2)$, then
+groups enter directly since the order of $C$ in the group
+$\GL_n(\Z_2)$ gives the longest period one can achieve from the LFSR.
 
-\begin{comment}
-Let $n$ be a positive integer.  An $n$-stage LFSR generates its key
-stream by a linear recurrence relation
-\[ x_{k+n} = c_{n-1} x_{k+n-1}\pots c_0 x_k\]
-where $(c_0\cots c_{n-1})\in\Z_2^n$ is a fixed vector called the
-taps.  Note that if $c_0=0$, then the recurrence relation has
-effectively at most $n-1$ terms, so would be an $n-1$-stage LFSR.  So,
-we assume $c_0=1$.
-\end{comment}
-
-%We can picture an $n$-stage LFSR as follows
-%\[\begin{CD}
-%@| @. @| @. \\
-%\boxed{x_k} @>>> \boxed{x_{k+1}} @>>> \cdots @>>> \boxed{x_{k+n-1}} @>>> x_k \\
-%\end{CD}
-%\]
-
-%The key stream is also determined by  the \emph{initial
-% loading} of the LFSR, i.e., the first $n$ bits in the sequence.
+Although an LFSR is a stream cipher, it is also a specific case of a
+general method of making a cipher from a group action.  The basic
+ingredients are a group $G$ acting on a set $S$ and a function
+$f:S\to\Z_2$.  Then we choose an element $g\in G$ and an initial
+element $s_0\in S$.  We construct a sequence of elements of $S$, and
+the corresponding stream of $x_i \in \{0,1\}$ via
+\[ s_n = g\cdot s_{n-1} \qquad x_n = f(s_n).\]
 
 
-  \xymatrix@R-5pt{
-& \ar[rrrr] & &  &  &  {\bigoplus} \ar `d/1pt[d] [ld] \\
-\ldots01011001
-&   *+[F]{x_n} \ar[l] \ar[u]_{c_1} & *+[F]{x_{n+1}} \ar[l]
-  \ar[u]_{c_2} &*+[F]{x_{n+2}} \ar[l] \ar[u]_{c_3} &*+[F]{x_{n+3}} \ar[l]
-  \ar[u]_{c_4}&   \\
-}
-
-
-\begin{align*}
-x_{n+4} &= c_4x_{n+3}+c_3 x_{n+2}+c_2 x_{n+1}+ c_1x_n \bmod 2 \\
-&= \sum_{j=1}^4 c_j x_{n+j-1}\bmod 2
-\end{align*}
-Taps: $c_1$, \ldots, $c_4$ \\
-Initial load: $[x_1,\ldots, x_4]$
 
 We will not go into the details here, but one can form a general
 stream cipher based on a group acting on a set.  An LFSR is a special
@@ -2731,6 +2695,87 @@ To see how this works, it helps to see some examples of cosets.
 \end{prob}
 
 
+\section{LFSRs} \label{lfsr}
+A \term{linear feedback shift register}, or LFSR, is a type of stream
+cipher.  We imagine that the plaintext has been converted to a long
+bitstring (string of zeros and ones).  The idea is to use a small
+amount of information to produce a seemingly random infinite
+bitstring, called the key stream, which is added modulo $2$ to the
+plaintext to obtain the ciphertext.  Decryption is accomplished by
+adding the key stream again.
+
+In an $n$-stage LFSR, we have $n$ memory locations which each holds a
+bit, i.e., a $0$ or a $1$.  We visualize these as $n$ boxes in a row.
+When we run the LFSR by one step forward, the bits shift one box to
+the left.  The bit in the leftmost box comes out, and is the next bit
+of the key stream.  The only thing remaining is to fill the rightmost
+box.  For that, we use a fixed linear combination of the bits in the
+registers taken modulo $2$.
+
+\begin{comment}
+Let $n$ be a positive integer.  An $n$-stage LFSR generates its key
+stream by a linear recurrence relation
+\[ x_{k+n} = c_{n-1} x_{k+n-1}\pots c_0 x_k\]
+where $(c_0\cots c_{n-1})\in\Z_2^n$ is a fixed vector called the
+taps.  Note that if $c_0=0$, then the recurrence relation has
+effectively at most $n-1$ terms, so would be an $n-1$-stage LFSR.  So,
+we assume $c_0=1$.
+\end{comment}
+
+We can picture an $4$-stage LFSR as follows
+
+  \xymatrix@R-5pt{
+& \ar[rrrr] & &  &  &  {\bigoplus} \ar `d/1pt[d] [ld] \\
+\ldots01011001
+&   *+[F]{x_n} \ar[l] \ar[u]_{c_1} & *+[F]{x_{n+1}} \ar[l]
+  \ar[u]_{c_2} &*+[F]{x_{n+2}} \ar[l] \ar[u]_{c_3} &*+[F]{x_{n+3}} \ar[l]
+  \ar[u]_{c_4}&   \\
+&
+}
+
+Here, sequence of bits which is output by the LFSR is denoted $x_1$,
+$x_2$, $x_3$, \ldots.  The linear combination used to fill the
+rightmost box is
+\begin{align}
+x_{n+4} &= c_4x_{n+3}+c_3 x_{n+2}+c_2 x_{n+1}+ c_1x_n \quad \bmod 2 \label{lfsrrecur}\\
+&= \sum_{j=1}^4 c_j x_{n+j-1}\quad \bmod 2
+\end{align}
+The values $c_1, \ldots, c_4\in\{0,1\}$ are called the taps.  To get
+things started, we also need the initial contents of the boxes $(x_1,\ldots, x_4)$.
+
+LFSRs have been used in cases where one needs to encrypt large amounts
+of data quickly, such as digitized audio in military phones used in
+the field.  The bit operations can be implemented fairly easily in
+hardware, making them fast.
+
+Mathematically, we can view this as simply a sequence defined by a
+linear recursion, namely equation~\eqref{lfsrrecur}.  In general, a
+linear recursive sequence can be thought of as coming from matrix
+multiplication:
+\[ C 
+\begin{pmatrix} x_i \\ x_{i+1} \\ \vdots \\ x_{i+n-1} \end{pmatrix} =
+\begin{pmatrix} x_{i+1} \\ x_{i+2} \\ \vdots \\ x_{i+n} \end{pmatrix}
+\]
+where (for a $4$-stage LFSR)
+\[ C = \begin{pmatrix} 0 & 0 & 0 & -c_1 \\
+1 & 0  & 0 & -c_2 \\
+0 & 1  & 0 & -c_3 \\
+0 & 0 & 1 & -c_4 
+\end{pmatrix}
+\]
+Shifting the LFSR one time corresponds to multiplying by $C$ once,
+running it $2$-steps corresponds to multiplying by $C$ twice, or
+equivalently by $C^2$, and so on.  So, understanding the behavior of
+the LFSR comes by understanding powers of $C$.
+
+A standard convention for LFSRs is to assume $c_1=1$; otherwise, the
+exact same stream of bits could be generated by a shorter LFSR.  With
+this assumption, the matrix $C$ above has non-zero determinant (modulo
+$2$), so is invertible.  In other words, $C\in \GL_n(\Z_2)$, and we
+would need to analyze the powers of this group element.
+
+Using ideas from linear algebra (e.g., eigenvalues and eigenvectors),
+one can understand more about LFSRs.
 
 
 

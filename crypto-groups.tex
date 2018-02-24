@@ -2174,7 +2174,7 @@ can adjust constant factors to make each factor monic as well.
   but we can multiply the first factor by $\frac12$ and the second by
   $2$ to obtain $x^2-4=(x-2)(x+2)$.
 \end{exam}
-\begin{prop}
+\begin{prop} \label{monicirred}
   Let $K$ be a field and $\alpha\in\Kbar$.  Let $f(x)$ be a
   monic polynomial with coefficients in $K$ of minimal degree
   such that $f(\alpha)=0$.  Then
@@ -2250,34 +2250,56 @@ substitution from equation~\eqref{gammapow} until the degree is less
 than $n$.
 
 To complete the proof, we would need to show that every non-zero
-element of $K[\gamma]$ has a multiplicative inverse of the same form.
-We leave the proof to a course in abstract algebra.\footnote{One could
-  either prove and use an analogue of the Bezout property for
-  polynomials, or linear algebra.}
+element of $K[\gamma]$ has a multiplicative inverse of the same
+form.
+Suppose $\alpha=\sum_{j=0}^{n-1} a_j \gamma^j\neq 0$. Since 
+$K[\gamma]\subseteq \Kbar$, $\alpha$ satisfies a polynomial 
+$g\in K[x]-\{0\}$,
+and we can take $g$ to be of minimal degree, say
+\[ g = \sum_{j=0}^m b_j x^j.\]
+From part~1 of Proposition~\ref{monicirred}, $g$ is irreducible, and
+so $b_0\neq 0$ (or else we can factor out $x$).  So, from $g(\alpha)=0$
+we get
+\[ b_0 = \alpha\cdot \sum_{j=1}^m -b_j \alpha^{j-1}\]
+which gives
+\[ 1 = \alpha\cdot \sum_{j=1}^m \frac{-b_j}{b_0} \alpha^{j-1}\]
 \end{proof}
 Now suppose $K$ is a field, $\alpha\in\Kbar$, and $f(x)$ is the monic
 irreducible polynomial for $\alpha$ over $K$.  By
-Prop.~\ref{ext-field}, we get a field $K[\alpha]$.  It is pretty easy
+Prop.~\ref{ext-field}, we get a field $K[\alpha]$ (which then is usually
+denoted $K(\alpha)$\footnote{The general notational convention is that
+$K[\alpha]$ is the smallest {\em ring} containing $K$ and $\alpha$, and
+$K(\alpha)$ is the smallest {\em field} containing $K$ and $\alpha$.  In
+the situation considered here, Proposition~\ref{ext-field} shows that $K[\alpha]$
+is already a field, so $K[\alpha]=K(\alpha)$.}.  It is pretty easy
 to see that elements of that form are closed under addition and
 additive inverse.  When multiplying two elements of that form, we
 typically get powers of $\alpha$ as high as $\alpha^{2n-2}$.
 
-%\subsection{Fields and polynomials}
-% Let $F$ be a field and $\alpha\in\overline F$.  A polynomial over $F$
-% is a polynomial $f=a_nx^n\pots a_0$ where all $a_i\in F$.  Then $f$ is
-% non-zero if some $a_i\neq 0$.
+Suppose $\alpha$ is a root of some $f\in K[x]-\{0\}$.  Then we say
+that $\alpha$ is {\em algebraic} over $K$.  If $n$ is the degree of 
+the monic irreducible polynomial for $\alpha$, then we say that $\alpha$
+has degree $n$ over $K$, and that $K(\alpha)$ has degree $n$ over $K$.
+Note that by Propositions~\ref{monicirred} and \ref{ext-field},
+every element of $K(\alpha)$ can be written uniquely in the form
+\[ a_{n-1} \alpha^{n-1}+a_{n-2}\alpha^{n-2}+\cdots + a_0\]
+with the $a_i\in K$.  So, there are $n$, which is the degree of the field,
+parameters which give the elements of $K$.
 
-% From the definition of $\overline F$, $\alpha$ is a root of a non-zero
-% polynomial $g$.  We can then repeatedly factor $g$ as a product of
-% polynomials of lower degree until we get to irreducibles: $g=h_1\cdots
-% h_m$.  Then $0=g(\alpha)=h_1(\alpha)\cdots h_m(\alpha)$, so
-% $h_i(\alpha)=0$ for some $i$.  Thus $\alpha$ is a root of an
-% irreducible polynomial.
+\begin{exam}
+  Since $\C=\R(i)$ where $i$ is a root of the irreducible polynomial $x^2+1$,
+  then $\C$ is degree $2$ over $\R$.  This fits with the usual description of
+  complex numbers being in the form $a+bi$ with $a,b\in \R$.  There are two
+  parameters, and every element of $\C$ can be written uniquely in this form.
+\end{exam}
 
-% Now let $g$ be an irreducible polynomial with $\alpha$ as a root.  We
-% can divide $g$ by its leading coefficient, and reduce to the case
-% where the leading coefficient of one.  A polynomial with leading
-% coefficient of one is called \term{monic}.
+\begin{exam}
+  Since $\sqrt{2}$ is a root of $x^2-2\in \Q[x]$ and this polynomial is irreducible
+  over $\Q$, we get that
+  \[ \Q(\sqrt{2}) = \{a+b\sqrt{2}\mid a,b\in \Q\}\]
+  and every element is uniquely of this form.  The degree of $\Q(\sqrt2)$ over $\Q$
+  is $2$.
+\end{exam}
 
 \subsection{Finite fields}
 

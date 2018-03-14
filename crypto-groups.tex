@@ -1334,6 +1334,86 @@ groups.
   Prove Proposition~\ref{prodker}.
 \end{prob}
 
+\subsection{Applying the classification theorem}
+
+We can use Theorem~\ref{finiteabelian} to list all abelian groups of a
+given order.  In general for sets, $|A\times B|=|A|\cdot|B|$, and so
+\[ |\Z_{n_1}\times\cdots\times \Z_{n_k}| = n_1\cdot n_2 \cdots n_k .\]
+Then list all abelian groups of order $n>1$, we have to find all factorizations
+$n=n_1n_2\cdots n_k$ with $n_i\mid n_{i+1}$ for all $i$, and all $n_i>1$.
+
+For example, suppose $n$ is a prime power, i.e., $n=p^m$, for some prime $p$.  
+Then the factorization will
+take the form $p^m = p^{a_1}p^{a_2}\cdots p^{a_k}$.  Thus $a_1+\cdots+a_k = m$,
+and the condition $p^{a_i}\mid p^{a_{i+1}}$ implies $a_i\leq a_{i+1}$ for all $i$.
+Thus, it comes down to writing $m$ as a sum of positive integers with the
+integers listed in non-decreasing order (this is called a {\em partition} of $m$).
+
+\begin{exam}
+  If $p$ is a prime, we write down all of the abelian groups of order $p^4$ up to
+  isomorphism.  First, we need the partitions of $m=4$:
+\[ 4,\quad 1+3,\quad 2+2,\quad 1+1+2,\quad 1+1+1+1\]
+  The factorizations of $p^4$ are then
+\[ p^4,\quad p^1\cdot p^3,\quad p^2\cdot p^2,\quad p^1\cdot p^1\cdot p^2,
+\quad p^1\cdot p^1\cdot p^1\cdot p^1\]
+  Finally, we write down the corresponding groups:
+\[ \Z_{p^4},\quad \Z_p\times \Z_{p^3},\quad \Z_{p^2}\times\Z_{p^2},\quad 
+\Z_p\times\Z_p\times \Z_{p^2},\quad \Z_p\times\Z_p\times\Z_p\times\Z_p\]
+\end{exam}
+
+The next table writes out the corresponding results for smaller powers of $p$.
+\[ \begin{array}{l|l|l}
+p^m & \text{Partitions of $m$} & \text{Groups} \\ \hline
+p & 1 &\Z_p \\
+p^2 & 2, 1+1 &\Z_{p^2}, \Z_p\times \Z_p \\
+p^3 & 3, 1+2, 1+1+1 &\Z_{p^3}, \Z_{p^2}\times\Z_p, \Z_p\times \Z_p\times\Z_p
+\end{array} \]
+
+If there is more than one prime dividing $n=|A|$, then we carry out the above
+process for each prime and consider every combination.  For each combination,
+we form $n_k$ by taking the product of the biggest power for each prime, $n_{k-1}$
+is the product of the second biggest power of each prime, and so on.  If we run
+out of factors for a prime, it does not appear in the corresponding $n_i$.
+\begin{exam}
+  Suppose we want to write down all abelian groups of order $3^2\cdot 5\cdot 7^3$.
+  Then the options for the individual primes are:
+  \begin{align*}
+  3^2 &: 3^2, 3\cdot 3 \\
+  5^1 &: 5 \\
+  7^3 &: 7^3, 7\cdot 7^2, 7\cdot 7\cdot 7 
+  \end{align*}
+  So, there are $2$ options for $3$, $1$ option for $5$, and $3$ options for $7$.
+  The total number of combinations is then $2\cdot 1\cdot 3=6$ (multiplying the
+  numbers of options).  Here are the $6$ abelian groups of order $3^2\cdot 5\cdot 7^3$.
+\[ \begin{array}{c|c|c|c}
+\text{$3$ part} & \text{$5$ part} & \text{$7$ part} & \text{Group} \\ \hline
+3^2 & 5 & 7^3 & \Z_{3^2\cdot 5 \cdot 7^3} \\
+3^2 & 5 & 7\cdot 7^2 & \Z_7\times \Z_{3^2\cdot 5 \cdot 7^2} \\
+3^2 & 5 & 7\cdot 7\cdot 7 & \Z_7\times \Z_7\times \Z_{3^2\cdot 5 \cdot 7} \\
+3\cdot 3 & 5 & 7^3 & \Z_3 \times \Z_{3\cdot 5 \cdot 7^3} \\
+3\cdot 3 & 5 & 7\cdot 7^2 & \Z_{3\cdot 7}\times \Z_{3^2\cdot 5 \cdot 7^2} \\
+3\cdot 3 & 5 & 7\cdot 7\cdot 7 & \Z_7\times \Z_{3\cdot 7}\times \Z_{3\cdot 5 \cdot 7} 
+\end{array}
+\]
+\end{exam}
+\begin{prob}
+For each value of $n$, list the abelian groups of order $n$ up to isomorphism.
+\begin{enumerate}
+\item $n=36$
+\item $n=24$
+\item $n=2310$
+\end{enumerate}
+\end{prob}
+
+\begin{prob}
+ Let $p$ be a prime.  List, up to isomorphism, the abelian groups of order $p^5$.
+\end{prob}
+
+\begin{prob}
+ Determine the number of abelian groups, up to isomorphism, of order
+ $2^2\cdot 3^3\cdot 5^4\cdot 7^5$.  You do \textbf{not} have to list them.
+\end{prob}
+
 \section{Rings}
 The definition of a ring applies to a couple of constructs we will
 need, and acts as a stepping stone to fields.  However, there are only

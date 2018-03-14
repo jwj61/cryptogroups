@@ -1328,6 +1328,7 @@ theory course.  Nonetheless, it tells us that if we can count torsion
 elements in a direct product of groups, then we can handle any finite
 abelian group.
 
+\subsubsection{Orders in products}
 Suppose $(g_1\cots g_k)\in G_1\times\cdots \times G_k$.  Since
 operations are done coordinatewise, if $j\in\Z^+$, then
 \[ (g_1\cots g_k)^j = (g_1^j\cots g_k^j).\]
@@ -1369,7 +1370,60 @@ groups.
   Prove Proposition~\ref{prodker}.
 \end{prob}
 
-\subsection{Applying the classification theorem}
+
+\begin{prob}
+Suppose 
+\begin{itemize}
+\item $k\in \Z^+$, 
+\item $n_i\in\Z^+$ for $1\leq i \leq k$, 
+\item $n_i\mid n_{i+1}$ for $1\leq i < k$
+\item $n_1\geq 2$,
+\end{itemize}
+and $G=\Z_{n_1}\times \Z_{n_2}\times\cdots \times \Z_{n_k}$.
+\begin{enumerate}
+\item Prove that if $\alpha\in G$, then the order of $\alpha$ divides
+  $n_k$.
+\item Prove that there exists $\alpha\in G$ such that $|\alpha|=n_k$.
+\item Prove the if $p$ is a prime which divides $n_1$, then
+  $|G[p]|=p^k$ and the number of elements of order $p$ is $p^k-1$.
+\end{enumerate}
+\end{prob}
+From this exercise, we get
+\begin{cor}\label{cyccor}
+  If $G$ is a finite abelian group such that for every prime $p$ we
+  have $|G[p]|\leq p$, then $G$ is cyclic.
+\end{cor}
+\begin{proof}
+  The trivial group is cyclic, and otherwise we can apply the exercise
+  with a prime dividing $n_1$ to deduce $k=1$.  Thus $G$ is cyclic.
+\end{proof}
+\begin{cor}
+  If $F$ is a field and $G$ is a finite subgroup of $F^\times$, then
+  $G$ is cyclic.
+\end{cor}
+\begin{proof}
+  Here we apply the general fact about polynomials over a field,
+  namely that a polynomial of degree $n$ over a field has at most $n$
+  roots.  If $p$ is a prime, then 
+\[
+\alpha\in G[p] \iff \alpha^p = 1
+ \iff \text{$\alpha$ is a root of $x^p-1$}\]
+So $|G[p]|\leq \deg(x^p-1) = p$.
+\end{proof}
+
+Next, we have a corollary more directly connected to elliptic curves.
+\begin{cor}
+  If $G$ is a finite abelian group such that for all primes $p$,
+  $|G[p]|\leq p^2$, then either $G$ is cyclic or $G$ is isomorphic to
+  a product of two cyclic groups.
+\end{cor}
+\begin{proof}
+  Again, the trivial group is cyclic.  Otherwise we apply the exercise
+  to a prime dividing $n_1$ to deduce $k\leq 2$.
+\end{proof}
+
+
+\subsubsection{Enumerating finite abelian groups}
 
 We can use Theorem~\ref{finiteabelian} to list all abelian groups of a
 given order.  In general for sets, $|A\times B|=|A|\cdot|B|$, and so
@@ -1380,9 +1434,11 @@ $n=n_1n_2\cdots n_k$ with $n_i\mid n_{i+1}$ for all $i$, and all $n_i>1$.
 For example, suppose $n$ is a prime power, i.e., $n=p^m$, for some prime $p$.  
 Then the factorization will
 take the form $p^m = p^{a_1}p^{a_2}\cdots p^{a_k}$.  Thus $a_1+\cdots+a_k = m$,
-and the condition $p^{a_i}\mid p^{a_{i+1}}$ implies $a_i\leq a_{i+1}$ for all $i$.
+and the condition $p^{a_i}\mid p^{a_{i+1}}$ implies $a_i\leq a_{i+1}$
+for all $i$. 
 Thus, it comes down to writing $m$ as a sum of positive integers with the
-integers listed in non-decreasing order (this is called a {\em partition} of $m$).
+integers listed in non-decreasing order (this is called a {\em
+  partition} of $m$). 
 
 \begin{exam}
   If $p$ is a prime, we write down all of the abelian groups of order $p^4$ up to

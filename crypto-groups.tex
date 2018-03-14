@@ -65,6 +65,7 @@
 \nc{\frob}{\mathcal{F}}
 \nc{\frobp}{\frob_p}
 \nc{\frobq}{\frob_q}
+\nc{\Ord}{\mathrm{Ord}}
 \renewcommand{\Im}{\mathrm{Im}} % don't need imaginary part
 \DeclareMathOperator{\Div}{Div}
 \DeclareMathOperator{\Pic}{Pic}
@@ -1173,7 +1174,7 @@ that it is a homomorphism, we check
 
 Theorem~\ref{orders-thm} establishes the connection between the
 order of an element and for which $m$ it is $m$-torsion.
-\begin{cor}
+\begin{cor} \label{orddivtor}
   If $G$ is a group and $g\in G$ has order $n$, then $g$ is
   $m$-torsion iff $n \mid m$.
 \end{cor}
@@ -1197,6 +1198,40 @@ Note, the analogous construction for elements of order $m$ is not a
 subgroup (unless $m=1$), since the identity element always has order
 $1$ and a subgroup must contain the identity.
 
+\subsection{Counting with orders and torsion}
+We can go back and forth between counting the number of elements of different
+orders and the number of $n$-torsion elements for each $n$.  If $G$ is a group
+and $m\in\Z^+$,
+let
+\[ G[m] = \{g\in G : g^m=e\}\]
+which is the set of $m$-torsion elements and
+\[ \Ord(G,m) = \{g\in G : |g|=m\},\]
+which is the set of elements of order $m$.  The key fact here is
+Corollary~\ref{orddivtor}.  From that we get the following equalities.
+In each case, $p$ is a prime, and the unions all involve disjoint sets.
+\begin{align*}
+G[1] &= \Ord(G,1) = \{e\} \\
+G[p] &= \Ord(G,1) \cup \Ord(G,p) \\
+G[p^2] & = \Ord(G,1) \cup \Ord(G,p) \cup \Ord(G,p^2)
+\end{align*}
+Similarly
+\[ G[6] = \Ord(G,1)\cup \Ord(G,2)\cup\Ord(G,3) \cup\Ord(G,6).\]
+If we know the sizes of the $\Ord(G,m)$, then these equalities give us
+directly the sizes of the $G[n]$.  Going the other way involves the
+set theoretic property of inclusion-exclusion.  In particular, if $p$ is a
+prime, then
+\[ \Ord(G,p^k) = G[p^k] - G[p^{k-1}] \implies |\Ord(G,p^k)| = |G[p^k]|-|G[p^{k-1}]|.\]
+When there is more than one prime involved, it gets a little more complicated:
+\begin{align*}
+ |\Ord(G,6)| &= |G[6]| - |\Ord(G,2)| - |\Ord(G,3)| - |\Ord(G,1)|  \\
+ &= |G[6]| - (|\Ord(G,2)| + |\Ord(G,1)|)  \\
+ & \qquad\qquad - (|\Ord(G,3)| + |\Ord(G,1)|) \\
+ & \qquad\qquad + |\Ord(G,1)|  \\
+&= |G[6]| - |G[2]| - |G[3]| + |G[1]|
+\end{align*}
+After subtracting off the number of $2$-torsion elements and the number of $3$-torsion 
+elements we have to add back the number of $1$-torsion elements because they have been
+subtracted twice.
 
 \subsection{Back to $\Zn$}\label{zn2}
 Here we analyze orders of elements in $\Zn$.

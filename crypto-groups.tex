@@ -2988,10 +2988,11 @@ multiplication:
 \begin{pmatrix} x_{i+1} \\ x_{i+2} \\ \vdots \\ x_{i+n} \end{pmatrix}
 \]
 where (for a $4$-stage LFSR)
-\[ C = \begin{pmatrix} 0 & 0 & 0 & -c_1 \\
-1 & 0  & 0 & -c_2 \\
-0 & 1  & 0 & -c_3 \\
-0 & 0 & 1 & -c_4 
+\[ C = \begin{pmatrix} 
+0 & 1 & 0 & 0 \\
+0 & 0  & 1 & 0 \\
+0 & 0  & 0 & 1 \\
+c_1 & c_2 & c_3 & c_4 
 \end{pmatrix}
 \]
 Shifting the LFSR one time corresponds to multiplying by $C$ once,
@@ -3028,8 +3029,9 @@ we mean the contents of the $n$ memory locations.
   \item So, if the initial load is not all $0$s, then output is a
     purely periodic sequence with period of at most $2^n-1$.
 \end{enumerate}
-Using linear algebra to analyze this further, one can prove that for
-each $n$, there is a set of taps so that one can achieve a period of $2^n-1$.
+Using linear algebra and the algebra of finite fields to analyze this further, 
+one can prove that for each $n$, there is a set of taps so that one can 
+achieve a period of $2^n-1$.
 
 
 
